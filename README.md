@@ -312,7 +312,7 @@ Each FASTA file contains reference nucleotide sequences for one segment.
 
 - **Columns:** `Genotype`, `PB2`, `PB1`, `PA`, `HA`, `NP`, `NA`, `MP`, and `NS`.
 - **Identifiers:** segment-group values must exactly match the reference FASTA headers.
-- **Matching:** the accepted eight-segment combination determines the genotype assignment.
+- **Matching:** The accepted eight-segment constellation determines the genotype assignment.
 - **Updates:** keep reference sequences and the key consistent; segment-group identifiers are distinct from whole-virus genotype names such as `AS-d.1`.
 
 ## Acknowledgments and license
