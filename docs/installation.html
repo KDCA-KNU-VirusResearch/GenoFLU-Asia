@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Installation | GenoFLU-Asia</title>
+<meta name="description" content="One Asia. One genotype framework. A unified framework for genotyping clade 2.3.4.4b H5 viruses across Asia.">
+<link rel="icon" type="image/svg+xml" href="assets/genoflu-asia-icon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body><a class="skip" href="#main">Skip to content</a><header><a class="brand" href="index.html"><img class="brand-icon" src="assets/genoflu-asia-icon.svg" alt="" width="40" height="40">GenoFLU<span class="brandasia">-Asia</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="genotypes.html">Genotypes</a><a href="installation.html" aria-current="page">Installation</a><a href="usage.html">Usage</a><a href="faqs.html">FAQs</a><a href="https://github.com/KDCA-KNU-VirusResearch/GenoFLU-Asia">GitHub ↗</a></nav></header><main id="main" class="docpage"><div class="docintro"><h1>Installation</h1></div><div class="docbody"><section id="installation">
+<p>GenoFLU-Asia can be used in a Conda environment on Linux or Ubuntu on WSL. Install Conda through Miniforge or Miniconda.</p>
+<ul><li><strong>Windows users:</strong> open the Ubuntu terminal and run the commands there. Conda must be available inside Ubuntu; installing Conda only on Windows is not sufficient.</li><li><strong>Command entry:</strong> paste a command and press Enter. Do not copy a terminal prompt such as <code>(base) user@computer:~$</code>.</li><li><strong>Already installed?</strong> If your existing setup works, keep it and go to <a href="usage.html#input-and-execution">Input and execution</a>.</li><li><strong>Korean walkthrough:</strong> see the <a href="docs/beginner_guide_ko.md">beginner&#x27;s installation and execution guide</a>.</li></ul>
+<h3 id="understand-the-folders">Understand the folders</h3>
+<p>The project files, Conda environment, and analysis files serve different purposes.</p>
+<div class="tablewrap"><table><thead><tr><th>Item</th><th>Purpose</th><th>Example</th></tr></thead><tbody><tr><td>Project folder</td><td>Stores the scripts, reference sequences, and genotype key</td><td><code>~/projects/GenoFLU-Asia</code></td></tr><tr><td>Conda environment</td><td>Provides Python, BLAST, and required packages</td><td>Environment named <code>genoflu-asia</code></td></tr><tr><td>Analysis folder</td><td>Stores input FASTA files and output workbooks</td><td><code>~/genoflu_asia_analysis</code></td></tr></tbody></table></div>
+<ul><li><strong>Project location:</strong> keep the project in a working folder; it does not need to be inside Conda&#x27;s <code>envs</code> directory.</li><li><strong><code>~</code>:</strong> your Linux home folder, for example <code>/home/user</code>.</li><li><strong><code>cd</code>:</strong> changes your current folder. <strong><code>conda activate</code>:</strong> selects an environment without changing folders.</li><li><strong>Paths:</strong> use English letters, numbers, <code>_</code>, <code>-</code>, and <code>.</code> in project and input folder/file names; avoid spaces, parentheses, and non-ASCII characters.</li></ul>
+<h3 id="1-clone-the-repository--once">1. Clone the repository — once</h3>
+<p>Cloning downloads the complete project, including the scripts, reference sequences, and genotype key. First check that Git is available in your Linux or Ubuntu terminal:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-1">Copy</button></div><pre><code id="command-1">git --version</code></pre>
+<p>If Ubuntu reports <code>git: command not found</code>, install Git, then continue:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-2">Copy</button></div><pre><code id="command-2">sudo apt update
+sudo apt install git</code></pre>
+<p>When prompted by <code>sudo</code>, enter your Ubuntu password; no characters appear while you type.</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-3">Copy</button></div><pre><code id="command-3">mkdir -p ~/projects
+git clone https://github.com/KDCA-KNU-VirusResearch/GenoFLU-Asia.git ~/projects/GenoFLU-Asia
+cd ~/projects/GenoFLU-Asia
+ls</code></pre>
+<ul><li><strong><code>mkdir -p</code>:</strong> creates the parent folder if needed.</li><li><strong><code>git clone</code>:</strong> downloads the repository into <code>~/projects/GenoFLU-Asia</code>.</li><li><strong><code>cd</code>:</strong> moves into the downloaded project folder.</li><li><strong><code>ls</code>:</strong> lists its contents; check for <code>genoflu.py</code>, <code>run_genoflu.sh</code>, <code>install_command.sh</code>, and <code>dependencies/</code>. Keep them together.</li><li><strong>Existing copy:</strong> if this folder already contains your project, skip cloning and enter it with <code>cd</code>.</li></ul>
+<h3 id="2-create-the-conda-environment--once">2. Create the Conda environment — once</h3>
+<p>First check Conda and existing environments:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-4">Copy</button></div><pre><code id="command-4">conda --version
+conda env list</code></pre>
+<p>If <code>genoflu-asia</code> already exists with the required packages, skip the creation command. Otherwise, run this single-line command:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-5">Copy</button></div><pre><code id="command-5">conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda python=3.13 pandas=2.3.2 biopython=1.85 openpyxl=3.1.5 blast=2.17.0</code></pre>
+<ul><li><strong><code>-n genoflu-asia</code>:</strong> names the environment.</li><li><strong>Packages:</strong> Python runs the code; pandas and openpyxl handle tables and Excel files; Biopython handles sequence data; BLAST compares sequences.</li><li><strong>Confirmation:</strong> if prompted with <code>Proceed ([y]/n)?</code>, review the installation list, enter <code>y</code>, and wait for installation to finish.</li><li><strong>Validation:</strong> the release files were tested in the existing Ubuntu 24.04 Conda environment with BLAST 2.17.0, pandas 2.3.2, Biopython 1.85, and openpyxl 3.1.5. A test input containing 688 sequences from 86 virus IDs produced 86 result rows, matching the existing code except for analysis timestamps. Repeated execution and Asia reference defaults were also checked. Fresh-environment installation has not yet been tested.</li></ul>
+<h3 id="3-activate-the-environment-and-register-the-command--once">3. Activate the environment and register the command — once</h3>
+<p>Run the installer from the project folder after activating the environment:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-6">Copy</button></div><pre><code id="command-6">conda activate genoflu-asia
+cd ~/projects/GenoFLU-Asia
+bash install_command.sh
+genoflu-asia --help</code></pre>
+<ul><li><strong>Registration:</strong> creates the <code>genoflu-asia</code> command in the activated environment, so you can run it from other folders.</li><li><strong>Check:</strong> <code>--help</code> displays usage instructions without starting an analysis; it does not test the full analysis workflow.</li><li><strong>Already registered:</strong> do not repeat registration. If <code>Command already exists</code> appears, first check <code>genoflu-asia --help</code>.</li><li><strong>Project location:</strong> keep the project at its registered location. The installer does not overwrite an existing command if you move the project.</li></ul></section><a class="button primary" href="usage.html">Next: input and execution →</a></div></main><footer><a class="brand" href="index.html">GenoFLU<span class="brandasia">-Asia</span></a><p>An Asia-focused adaptation of <a href="https://github.com/USDA-VS/GenoFLU">GenoFLU</a> · Upstream license: GPL-3.0</p><span>KDCA · KNU</span></footer><div role="status" aria-live="polite" id="status"></div><script src="app.js"></script></body></html>

@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.log
+*.bak*
+*Zone.Identifier*
+genoflu_combined_results.xlsx
+hpai_geno_db.*
+*.temp/
+input/
+output/

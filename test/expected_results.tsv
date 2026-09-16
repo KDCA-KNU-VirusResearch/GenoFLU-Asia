@@ -1,0 +1,11 @@
+Virus ID	Expected genotype	Category	Segments	Source accession
+21AS-a.1(N6)_A/Chicken/Sichuan/21859-5/2021(H5N6)	AS-a.1(N6)	major	8	EPI_ISL_6760682
+21AS-b.1_A/Common_Teal/South_Korea/W811/2021	AS-b.1	major	8	EPI_ISL_8405626
+21AS-c.1_A/duck/Bangladesh/51600/2021	AS-c.1	major	8	EPI_ISL_14886825
+21AS-d.1_A/Black-faced_spoonbill/Kumamoto/4302C001/2026_(H5N1)	AS-d.1	major	8	EPI_ISL_20448871
+22NA.1(B3.2)_A/chicken/Korea/H633/2022	NA.1(B3.2)	major	8	EPI_ISL_19453465
+21minor1(N6)_A/duck/Guangdong/SE195/2021	minor1(N6)	minor	8	EPI_ISL_9637825
+21minor3(N6)_A/duck/Shandong/SD0261/2021	minor3(N6)	minor	8	EPI_ISL_18058053
+21minor4_A/Bar-headed_Goose/Tibet/XZ1131/2021	minor4	minor	8	EPI_ISL_8215689
+21minor5(N6)_A/Chicken/Hebei/211021/2021(Mixed)	minor5(N6)	minor	8	EPI_ISL_6760686
+21minor6(N6)_A/chicken/Guangdong/MG171361/2021	minor6(N6)	minor	8	EPI_ISL_19210552

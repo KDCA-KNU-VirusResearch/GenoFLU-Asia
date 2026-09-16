@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Usage | GenoFLU-Asia</title>
+<meta name="description" content="One Asia. One genotype framework. A unified framework for genotyping clade 2.3.4.4b H5 viruses across Asia.">
+<link rel="icon" type="image/svg+xml" href="assets/genoflu-asia-icon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body><a class="skip" href="#main">Skip to content</a><header><a class="brand" href="index.html"><img class="brand-icon" src="assets/genoflu-asia-icon.svg" alt="" width="40" height="40">GenoFLU<span class="brandasia">-Asia</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="genotypes.html">Genotypes</a><a href="installation.html">Installation</a><a href="usage.html" aria-current="page">Usage</a><a href="faqs.html">FAQs</a><a href="https://github.com/KDCA-KNU-VirusResearch/GenoFLU-Asia">GitHub ↗</a></nav></header><main id="main" class="docpage"><div class="docintro"><h1>Input, execution, and results</h1></div><div class="docbody"><section id="input-and-execution"><h2>Input and execution</h2>
+<p>Use the same input and output folders for each analysis. The analysis folder, <code>~/genoflu_asia_analysis</code>, is separate from the program folder, <code>~/projects/GenoFLU-Asia</code>.</p>
+<h3 id="prepare-folders">Prepare folders</h3>
+<p>Create the analysis folder and its input/output folders once. No intermediate run folders are needed:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-1">Copy</button></div><pre><code id="command-1">mkdir -p ~/genoflu_asia_analysis/input ~/genoflu_asia_analysis/output
+cd ~/genoflu_asia_analysis
+pwd</code></pre>
+<pre><code>~/genoflu_asia_analysis/
+├── input/
+│   ├── sample01.fasta
+│   └── sample02.fasta
+└── output/</code></pre>
+<ul><li><strong><code>mkdir -p</code>:</strong> creates folders if they do not exist. <strong><code>pwd</code>:</strong> shows your current working directory.</li><li><strong>Copy files:</strong> place your assembled nucleotide FASTA files directly in <code>input</code>. On WSL, run <code>explorer.exe input</code> from <code>~/genoflu_asia_analysis</code> to open that folder in Windows File Explorer.</li><li><strong>Files:</strong> all lowercase <code>.fasta</code> files directly inside the input folder are analyzed; each may contain one or multiple viruses.</li><li><strong>Extensions:</strong> <code>.fa</code>, <code>.fna</code>, <code>.FASTA</code>, and <code>.fasta.txt</code> are not selected by the batch script. Renaming a spreadsheet to <code>.fasta</code> does not convert it into sequence data.</li></ul>
+<h3 id="prepare-fasta-headers">Prepare FASTA headers</h3>
+<p>All segments of a virus must share the same ID before the first <code>|</code>.</p>
+<ul><li>Use IDs without spaces and a distinct ID for each virus.</li><li>Include all eight segments: <strong>PB2, PB1, PA, HA, NP, NA, MP, and NS</strong>.</li><li>Follow each header with its corresponding nucleotide sequence.</li></ul>
+<p>Header examples:</p>
+<pre><code>&gt;sample01|PB2
+&gt;sample01|PB1</code></pre>
+<p>These are header examples only, not a runnable input file; each must be followed by its corresponding real nucleotide sequence.</p>
+<h3 id="run">Run</h3>
+<div class="stephead code-actions"><button class="copy" data-copy="command-2">Copy</button></div><pre><code id="command-2">conda activate genoflu-asia
+cd ~/genoflu_asia_analysis
+genoflu-asia --input ./input --output ./output</code></pre>
+<ul><li><strong><code>conda activate genoflu-asia</code>:</strong> selects the required environment; repeat this in each new terminal session.</li><li><strong><code>--input ./input</code>:</strong> reads the <code>input</code> folder inside your current directory, not a particular filename.</li><li><strong><code>--output ./output</code>:</strong> saves results in the <code>output</code> folder inside your current directory.</li><li><strong>Progress:</strong> wait for <code>All files processed.</code> and check for errors. Run only one analysis at a time per project folder.</li></ul>
+<p>To avoid depending on your current folder, specify the paths explicitly:</p>
+<pre><code>genoflu-asia --input ~/genoflu_asia_analysis/input --output ~/genoflu_asia_analysis/output</code></pre>
+<h3 id="open-the-results">Open the results</h3>
+<p>Open <code>~/genoflu_asia_analysis/output/genoflu_combined_results.xlsx</code> in Excel and select the <strong>All Results</strong> sheet. On WSL, open the output folder with:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-3">Copy</button></div><pre><code id="command-3">explorer.exe ~/genoflu_asia_analysis/output</code></pre>
+<p>Confirm that all expected virus IDs appear, then use <a href="usage.html#interpreting-results">Interpreting results</a> below to read the assignments.</p>
+<h3 id="run-another-analysis">Run another analysis</h3>
+<p>Reuse the same folders; do not recreate the environment, register the command again, or create a new run folder.</p>
+<ol><li>Move any FASTA files you no longer want to analyze out of <code>input</code>, then copy the new files into it. Every <code>.fasta</code> file left in this folder will be analyzed.</li><li>If you need to keep the previous result, rename or copy <code>output/genoflu_combined_results.xlsx</code> before running again; the same output filename is reused.</li><li>Activate the environment and run:</li></ol>
+<div class="stephead code-actions"><button class="copy" data-copy="command-4">Copy</button></div><pre><code id="command-4">conda activate genoflu-asia
+cd ~/genoflu_asia_analysis
+genoflu-asia --input ./input --output ./output</code></pre>
+<ul><li><strong>Interrupted runs:</strong> move aside any workbook left in the project folder before restarting, as new rows may be appended.</li><li><strong>Without command registration:</strong> run <code>bash ~/projects/GenoFLU-Asia/run_genoflu.sh --input ~/genoflu_asia_analysis/input --output ~/genoflu_asia_analysis/output</code> with the environment activated.</li><li><strong>Troubleshooting:</strong> see the <a href="docs/usage_guide.md">usage guide</a> or the <a href="docs/beginner_guide_ko.md">Korean beginner&#x27;s guide</a>.</li></ul></section><section id="test-the-installation"><h2>Test the installation</h2>
+<p>The <code>test/</code> folder contains <code>example_10_genotypes.fasta</code> (10 viruses, eight segments each) and <code>expected_results.tsv</code>. The example covers five distinct major and five distinct minor genotypes. Expected assignments were verified with the bundled Asia references and genotype key; they are software test results, not an independent biological validation.</p>
+<p>Run the example using your activated environment:</p>
+<div class="stephead code-actions"><button class="copy" data-copy="command-5">Copy</button></div><pre><code id="command-5">conda activate genoflu-asia
+genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analysis/output</code></pre>
+<ul><li><strong>Previous output:</strong> rename or copy an existing <code>genoflu_combined_results.xlsx</code> before running this test if you need to keep it.</li><li><strong>Expected output:</strong> 10 rows in the <strong>All Results</strong> sheet. Compare each virus ID and its <code>Genotype</code> with <code>test/expected_results.tsv</code>; the output <code>sample</code> field adds a filename-derived prefix followed by <code>__</code> before the virus ID.</li><li><strong>Major genotypes:</strong> <code>AS-a.1(N6)</code>, <code>AS-b.1</code>, <code>AS-c.1</code>, <code>AS-d.1</code>, <code>NA.1(B3.2)</code>.</li><li><strong>Minor genotypes:</strong> <code>minor1(N6)</code>, <code>minor3(N6)</code>, <code>minor4</code>, <code>minor5(N6)</code>, <code>minor6(N6)</code>.</li><li><strong>Input provenance:</strong> the selected records retain their original FASTA headers, accession identifiers, and nucleotide sequences from the supplied dataset. Major/minor labels follow the study genotype key, not the number of examples in this test file.</li></ul></section><section id="interpreting-results"><h2>Interpreting results</h2>
+<p>A genotype is assigned when all eight accepted segment groups match an entry in <code>genotype_key_asia.xlsx</code>.</p>
+<ul><li><strong>Identity threshold:</strong> BLAST nucleotide identity <strong>≥97%</strong> for each accepted segment.</li><li><strong>Alignment scope:</strong> the threshold applies to local alignments; no minimum alignment-coverage filter is applied.</li></ul>
+<div class="tablewrap"><table><thead><tr><th>Result or column</th><th>Meaning</th></tr></thead><tbody><tr><td><code>Genotype</code></td><td>Assigned genotype; a <code>minor</code> name is also a valid assignment.</td></tr><tr><td><code>Not assigned: No Matching Genotypes</code></td><td>Eight accepted segments form a combination absent from the key; this alone does not establish a novel genotype.</td></tr><tr><td><code>Not assigned: Only ... segments ...</code></td><td>Fewer than eight segments pass the threshold; check missing segments, sequence quality, and FASTA IDs.</td></tr><tr><td><code>Genotype Percent Match List</code></td><td>Percent identities of the selected reference alignments.</td></tr><tr><td><code>Genotype Mismatch List</code></td><td>Mismatching-base counts within the corresponding alignments.</td></tr></tbody></table></div>
+<ul><li><strong>List order:</strong> match identity and mismatch entries to gene labels in <code>Genotype Sample Title List</code>; do not assume a fixed segment order.</li><li><strong>Completeness:</strong> confirm that all expected virus IDs appear in the workbook.</li><li><strong>Date:</strong> <code>date</code> records the analysis date.</li><li><strong>Read depth:</strong> unavailable from FASTA input.</li><li><strong>Setup errors:</strong> check environment activation, dependencies, and lowercase <code>.fasta</code> extensions.</li><li><strong>More details:</strong> see the <a href="docs/usage_guide.md">usage guide</a> for troubleshooting and all output columns.</li></ul></section><a class="textlink" href="faqs.html">Questions? See the FAQs →</a></div></main><footer><a class="brand" href="index.html">GenoFLU<span class="brandasia">-Asia</span></a><p>An Asia-focused adaptation of <a href="https://github.com/USDA-VS/GenoFLU">GenoFLU</a> · Upstream license: GPL-3.0</p><span>KDCA · KNU</span></footer><div role="status" aria-live="polite" id="status"></div><script src="app.js"></script></body></html>
