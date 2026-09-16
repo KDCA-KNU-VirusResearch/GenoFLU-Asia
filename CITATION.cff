@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Cite this software repository and the version or commit used. The GenoFLU-Asia study citation is not yet available; see README for the upstream publication."
+type: software
+title: "GenoFLU-Asia"
+authors:
+  - name: "GenoFLU-Asia contributors"
+repository-code: "https://github.com/KDCA-KNU-VirusResearch/GenoFLU-Asia"
+url: "https://kdca-knu-virusresearch.github.io/GenoFLU-Asia/"
+license: GPL-3.0-only

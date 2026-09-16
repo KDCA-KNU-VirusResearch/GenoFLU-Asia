@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# SPDX-License-Identifier: GPL-3.0-only
+# Based on GenoFLU by Tod Stuber; see LICENSE and the upstream repository.
 
 __version__ = "1.0.0"
 
@@ -13,10 +15,8 @@ import textwrap
 import tempfile
 import subprocess
 import pandas as pd
-from collections import defaultdict
 from datetime import datetime
 
-from Bio import SeqIO
 
 # Fixed study criterion for reference-based segment assignment.
 PIDENT_THRESHOLD = 97.0
@@ -92,7 +92,7 @@ class Blast_Fasta(bcolors):
     ):
         FASTA_abs_path = FASTA
         FASTA_name = os.path.basename(FASTA_abs_path)
-        sample_name = re.sub('[_.].*', '', FASTA_name)
+        sample_name = os.path.splitext(FASTA_name)[0]
         self.sample_name = sample_name
         self.blast_db = blast_db
         blastout_file = os.path.join(working_dir or '.', 'query_blast_out.txt')
@@ -120,6 +120,71 @@ def parse_query_virus_id(header: str) -> str:
     return h.split()[0] if h else 'SINGLE_SAMPLE'
 
 
+def inspect_fasta(path):
+    """Validate nucleotide FASTA and inventory every virus, including no-hit queries."""
+    viruses = {}
+    query_ids = set()
+    current = None
+    bases = 0
+    record_count = 0
+    allowed = set('ACGTURYSWKMBDHVN-')
+    def invalid(message):
+        raise SystemExit(f'Error: invalid FASTA {path}: {message}')
+    try:
+        with open(path, encoding='utf-8-sig') as handle:
+            for line_number, raw in enumerate(handle, 1):
+                line = raw.strip()
+                if not line:
+                    continue
+                if line.startswith('>'):
+                    if current is not None and bases == 0:
+                        invalid(f'empty sequence for {current}')
+                    header = line[1:].strip()
+                    if not header:
+                        invalid(f'empty header at line {line_number}')
+                    query_id = header.split()[0]
+                    if '|' in header and '|' not in query_id:
+                        invalid(f'whitespace in virus ID at line {line_number}; use underscores')
+                    if query_id in query_ids:
+                        invalid(f'duplicate sequence ID at line {line_number}: {query_id}')
+                    virus_id = parse_query_virus_id(query_id)
+                    if not virus_id:
+                        invalid(f'empty virus ID at line {line_number}')
+                    query_ids.add(query_id)
+                    viruses[virus_id] = viruses.get(virus_id, 0) + 1
+                    record_count += 1
+                    current, bases = query_id, 0
+                else:
+                    if current is None:
+                        invalid(f'sequence before the first > header at line {line_number}')
+                    sequence = ''.join(line.split()).upper()
+                    bad = set(sequence) - allowed
+                    if bad:
+                        invalid(f'invalid nucleotide character(s) {sorted(bad)} at line {line_number}')
+                    bases += len(sequence.replace('-', ''))
+        if current is None:
+            invalid('no sequence records')
+        if bases == 0:
+            invalid(f'empty sequence for {current}')
+    except (OSError, UnicodeError) as exc:
+        invalid(str(exc))
+    return viruses, record_count
+
+
+def blast_workspace():
+    """Honor configured scratch storage while avoiding BLAST's unsafe DB paths."""
+    parent = os.path.abspath(os.environ.get('GENOFLU_TMPDIR') or
+                             os.environ.get('TMPDIR') or tempfile.gettempdir())
+    if not re.fullmatch(r'[A-Za-z0-9_./-]+', os.path.realpath(parent)):
+        raise SystemExit('Error: BLAST scratch path must use ASCII letters, numbers, _, -, / and .; '
+                         'set GENOFLU_TMPDIR to a writable path without spaces. '
+                         f'Configured path: {parent}')
+    try:
+        return tempfile.TemporaryDirectory(prefix='genoflu_blast_', dir=parent)
+    except OSError as exc:
+        raise SystemExit(f'Error: cannot create BLAST scratch directory in {parent}: {exc}')
+
+
 class GenoFLU():
     """
     Support multi-virus FASTA input:
@@ -127,51 +192,25 @@ class GenoFLU():
     - Assign a genotype when all eight accepted segments (>=97% identity) match the key.
     """
 
-    def __init__(self, FASTA=None, FASTA_dir=None, cross_reference=None, sample_name=None, debug=False):
+    def __init__(self, FASTA=None, FASTA_dir=None, cross_reference=None, sample_name=None, debug=False, input_inventory=None):
         self.debug = debug
         self.FASTA_abs_path = FASTA
         FASTA_name = os.path.basename(self.FASTA_abs_path)
 
-        # Count FASTA headers (the number of input sequences).
-        with open(self.FASTA_abs_path, 'r') as f:
-            fastas_in_file = sum(1 for line in f if line.startswith('>'))
-        self.fastas_in_file = fastas_in_file
+        self.input_viruses, self.fastas_in_file = (
+            input_inventory if input_inventory is not None else inspect_fasta(self.FASTA_abs_path))
 
         if sample_name:
             sample_name = sample_name
         else:
-            # Default to the filename prefix before the first '_' or '.'.
-            sample_name = re.sub('[_.].*', '', FASTA_name)
+            # Retain the entire filename stem to distinguish batch_alpha and batch_beta.
+            sample_name = os.path.splitext(FASTA_name)[0]
         self.sample_name = sample_name
 
         # Default to the Asia references shipped beside this script.
         script_path = os.path.dirname(os.path.realpath(__file__))
         self.FASTA_dir = FASTA_dir or os.path.join(script_path, 'dependencies', 'asia_fastas')
         self.cross_reference = cross_reference or os.path.join(script_path, 'dependencies', 'genotype_key_asia.xlsx')
-
-    def get_metadata(self,):
-        try:
-            import dvl_metadata_capture
-        except Exception:
-            return
-        sample_name = self.sample_name
-        root_name = re.sub('-submissionfile', '', sample_name)
-        metadata_dict = dvl_metadata_capture.get_metadata(root_name)
-        if not metadata_dict:
-            metadata_dict = {}
-        try:
-            metadata_dict["Collection Year"] = int(metadata_dict["Collection Year"])
-        except (TypeError, ValueError, KeyError):
-            metadata_dict["Collection Year"] = "n/a"
-        try:
-            metadata_format_string = (
-                f'A/{metadata_dict.get("species")}/{metadata_dict.get("state")}/'
-                f'{root_name}/{metadata_dict["Collection Year"]}'
-            )
-        except Exception:
-            metadata_format_string = 'No Metadata'
-        self.metadata_dict = metadata_dict
-        self.metadata_format_string = metadata_format_string
 
     def blast_hpai_genomes(self,):
         """
@@ -193,7 +232,7 @@ class GenoFLU():
                 raise SystemExit(f'Error: cannot read reference FASTA {reference_file}: {exc}')
         # BLAST may split database paths containing spaces internally. Stage all
         # tool inputs in a simple Linux temporary path, independent of user paths.
-        with tempfile.TemporaryDirectory(prefix='genoflu_blast_', dir='/tmp') as work:
+        with blast_workspace() as work:
             query = os.path.join(work, 'query.fasta')
             shutil.copyfile(self.FASTA_abs_path, query)
             try:
@@ -210,7 +249,7 @@ class GenoFLU():
                     shutil.copytree(work, debug_dir, dirs_exist_ok=True)
                     print(f'Debug files: {debug_dir}')
 
-        blast_genotyping_by_virus = defaultdict(dict)
+        blast_genotyping_by_virus = {virus_id: {} for virus_id in self.input_viruses}
 
         # Require reference titles in segment_group|reference_id|gene format.
         for line in blast_hpai_genotyping._raw_lines:
@@ -228,6 +267,9 @@ class GenoFLU():
 
             # Extract the virus ID from the query header.
             virus_id = parse_query_virus_id(qseqid)
+
+            if virus_id not in blast_genotyping_by_virus:
+                raise SystemExit(f'Error: BLAST returned an unknown virus ID: {virus_id}')
 
             each_blast = {
                 'blast_length': length,
@@ -326,8 +368,10 @@ class GenoFLU():
 
             if not matching_genotype:
                 segcnt = len(sample_dict)
-                total_in_sample = len(gene_map)
-                if segcnt == 8:
+                total_in_sample = self.input_viruses[virus_id]
+                if not gene_map:
+                    result['genotype'] = 'Not assigned: No BLAST hits'
+                elif segcnt == 8:
                     result['genotype'] = "Not assigned: No Matching Genotypes"
                 else:
                     result['genotype'] = (
@@ -375,8 +419,6 @@ class GenoFLU():
                 'Genotype Mismatch List': ', '.join(mismatch_list),
                 'Genotype Average Depth of Coverage List': 'Ran on FASTA - No Coverage Report',
             }
-            if hasattr(self, 'metadata_format_string'):
-                row['Metadata'] = self.metadata_format_string
 
             try:
                 column_order = list(row.keys())
@@ -432,7 +474,9 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
 
     excel_stats = Excel_Stats(args.output)
     all_rows = []
-    for input_fasta in args.FASTA:
+    # Validate the whole batch before starting BLAST or writing a workbook.
+    inventories = [inspect_fasta(os.path.abspath(path)) for path in args.FASTA]
+    for input_fasta, inventory in zip(args.FASTA, inventories):
         # Resolve input paths.
         FASTA_abs_path = os.path.abspath(input_fasta)
         try:
@@ -450,18 +494,20 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
             FASTA_dir=FASTA_dir,
             cross_reference=cross_reference,
             sample_name=args.sample_name,
-            debug=args.debug
+            debug=args.debug, input_inventory=inventory
         )
 
-        try:
-            genoflu.get_metadata()
-        except Exception:
-            pass
-
         genoflu.blast_hpai_genomes()
-
-        # Accumulate only this invocation; publish after every input succeeds.
-        all_rows.extend(genoflu.excel_rows())
+        rows = genoflu.excel_rows()
+        if set(genoflu.results_per_virus) != set(genoflu.input_viruses) or len(rows) != len(genoflu.input_viruses):
+            raise SystemExit(f'Error: input/output virus count mismatch for {input_fasta}; no workbook saved.')
+        all_rows.extend(rows)
+        no_hits = sum(result['genotype'] == 'Not assigned: No BLAST hits'
+                      for result in genoflu.results_per_virus.values())
+        print(f'File: {input_fasta} | sequences: {genoflu.fastas_in_file} | '
+              f'input viruses: {len(genoflu.input_viruses)} | output rows: {len(rows)} | no BLAST hits: {no_hits}')
+        if no_hits:
+            print(f'Warning: {input_fasta}: {no_hits} virus(es) have no BLAST hits; retained as unassigned.', file=sys.stderr)
 
         # Print genotype assignments.
         for virus_id, result in genoflu.results_per_virus.items():

@@ -92,13 +92,15 @@ conda env list
 If `genoflu-asia` already exists with the required packages, skip the creation command. Otherwise, run this single-line command:
 
 ```bash
-conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda python=3.13 pandas=2.3.2 biopython=1.85 openpyxl=3.1.5 blast=2.17.0
+conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda python=3.13 pandas=2.3.2 openpyxl=3.1.5 blast=2.17.0
 ```
 
 - **`-n genoflu-asia`:** names the environment.
-- **Packages:** Python runs the code; pandas and openpyxl handle tables and Excel files; Biopython handles sequence data; BLAST compares sequences.
+- **Packages:** Python runs the code; pandas and openpyxl handle tables and Excel files; BLAST compares sequences.
 - **Confirmation:** if prompted with `Proceed ([y]/n)?`, review the installation list, enter `y`, and wait for installation to finish.
 - **Validation:** the release files were tested in the existing Ubuntu 24.04 Conda environment with BLAST 2.17.0, pandas 2.3.2, Biopython 1.85, and openpyxl 3.1.5. A test input containing 688 sequences from 86 virus IDs produced 86 result rows, matching the existing code except for analysis timestamps. Repeated execution and Asia reference defaults were also checked. Fresh-environment installation has not yet been tested.
+
+- **Input-accounting regression:** Current input-accounting regression tests retained all expected results in two repeated 20-row batches (two 10-genotype files per run), retained no-hit viruses, and rejected malformed input without producing a workbook. These checks used the existing Linux/WSL environment; a fresh Conda solve was not performed.
 
 ### 3. Activate the environment and register the command — once
 
@@ -225,7 +227,7 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 ```
 
 - **Previous output:** existing workbooks are preserved; this test creates a new timestamped workbook.
-- **Expected output:** 10 rows in the **All Results** sheet. Compare each virus ID and its `Genotype` with `test/expected_results.tsv`; the output `sample` field adds a filename-derived prefix followed by `__` before the virus ID.
+- **Expected output:** 10 rows in the **All Results** sheet. Compare each virus ID and its `Genotype` with `test/expected_results.tsv`; the output `sample` field adds a full input filename stem (without `.fasta`) followed by `__` before the virus ID.
 - **Major genotypes:** `AS-a.1(N6)`, `AS-b.1`, `AS-c.1`, `AS-d.1`, `NA.1(B3.2)`.
 - **Minor genotypes:** `minor1(N6)`, `minor3(N6)`, `minor4`, `minor5(N6)`, `minor6(N6)`.
 - **Input provenance:** the selected records retain their original FASTA headers, accession identifiers, and nucleotide sequences from the supplied dataset. Major/minor labels follow the study genotype key, not the number of examples in this test file.
@@ -256,6 +258,22 @@ A genotype is assigned when all eight accepted segment groups match an entry in 
 - **Date:** `date` records the analysis date.
 - **Read depth:** unavailable from FASTA input.
 - **Setup errors:** check environment activation, dependencies, and lowercase `.fasta` extensions.
+
+### Input validation and reporting
+
+- Empty or malformed FASTA files stop the entire batch before BLAST starts. The error identifies the file and cause; no new workbook is saved.
+- Sequence IDs must be unique within each file. Nucleotide sequences may contain IUPAC ambiguity codes and gap hyphens; empty sequences and invalid characters are rejected.
+- Every input virus is retained in the output. `Not assigned: No BLAST hits` means no reference alignment was returned for that virus.
+- The terminal reports sequence count, input virus count, output row count, and no-hit virus count for each file.
+- `sample` uses the full input filename stem followed by `__` and the virus ID, so `batch_alpha.fasta` and `batch_beta.fasta` remain distinct.
+
+### Environment and temporary storage
+
+- `environment.yml` contains the Conda dependencies: from the project folder, use `conda env create -f environment.yml` as an alternative to the installation command above.
+- `requirements.txt` lists Python packages only; BLAST+ must be installed separately. Biopython is no longer required.
+- BLAST scratch storage uses `GENOFLU_TMPDIR`, then `TMPDIR`, then the operating system default. Choose an existing writable directory with enough space.
+- BLAST requires a simple scratch path containing only ASCII letters, numbers, `_`, `-`, `/`, and `.`. If your `TMPDIR` contains spaces, set a suitable path with `export GENOFLU_TMPDIR=/path/to/scratch`. Input, reference, project, and output paths may still contain spaces or Korean characters.
+- Linux/WSL remain the supported platforms; macOS has not been fully validated.
 
 ## Reference Database Structure
 
@@ -300,4 +318,5 @@ Developed in collaboration with the **Korea Disease Control and Prevention Agenc
 
 - **Software:** based on USDA-VS/GenoFLU; the upstream GPL-3.0 license is included in [LICENSE](LICENSE). This adaptation adds Asia-specific reference sequences and genotype keys, batch processing, and combined Excel output.
 - **Sequence data:** follow source-specific terms and acknowledgments, including GISAID where applicable.
-- **Citation:** the study citation and release identifier will be added when available.
+- **Citation:** cite the GenoFLU-Asia repository and the version or commit used; the study citation will be added when available. Software citation metadata is provided in `CITATION.cff`.
+- **Upstream publication:** Youk S, et al. (2023). H5N1 highly pathogenic avian influenza clade 2.3.4.4b in wild and domestic birds: Introductions into the United States and reassortments, December 2021–April 2022. *Virology* 587:109860. [doi:10.1016/j.virol.2023.109860](https://doi.org/10.1016/j.virol.2023.109860).

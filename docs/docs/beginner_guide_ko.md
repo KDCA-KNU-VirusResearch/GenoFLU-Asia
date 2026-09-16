@@ -65,7 +65,7 @@ ls
 기존에 필요한 패키지가 설치된 `genoflu-asia` 환경이 있으면 생성 명령은 생략하세요.
 
 ```bash
-conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda python=3.13 pandas=2.3.2 biopython=1.85 openpyxl=3.1.5 blast=2.17.0
+conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda python=3.13 pandas=2.3.2 openpyxl=3.1.5 blast=2.17.0
 ```
 
 이것은 한 줄 명령입니다. `Proceed ([y]/n)?`가 표시되면 설치 목록을 확인한 뒤 `y`를 입력하고 Enter를 누릅니다. 설치가 끝나 입력 가능한 프롬프트가 다시 나타날 때까지 기다립니다.
@@ -74,7 +74,6 @@ conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda pyth
 - `--override-channels -c conda-forge -c bioconda`: 패키지를 가져올 저장소를 지정합니다.
 - `python`: 분석 코드를 실행합니다.
 - `pandas`, `openpyxl`: 표와 Excel 파일을 처리합니다.
-- `biopython`: 서열 데이터를 처리합니다.
 - `blast`: 입력 서열과 참조 서열을 비교합니다.
 - `=숫자`: 설치할 버전입니다. 현재 로컬 구성의 버전이며, 새 환경 설치 검증은 아직 완료하지 않았습니다.
 
@@ -208,3 +207,12 @@ genoflu-asia --input ./input --output ./output
 | `Command already exists` | 등록 명령이 이미 존재함. `--help` 확인 후 기존 설치 상태 점검 |
 
 오류가 나면 마지막 한 줄만이 아니라 실행한 명령과 오류 메시지 전체를 보관하세요.
+
+
+## 입력 검사와 실행 환경
+
+- 비어 있거나 잘못된 FASTA는 분석 전에 파일명과 원인을 표시하고 전체 실행을 중단합니다. 새로운 엑셀은 저장하지 않습니다.
+- BLAST 검색 결과가 없는 바이러스도 `Not assigned: No BLAST hits`로 엑셀에 남습니다. 터미널에서 파일별 입력 바이러스 수와 출력 행 수를 확인할 수 있습니다.
+- `sample` 접두어는 확장자를 제외한 전체 파일명입니다.
+- 프로젝트 폴더에서 `conda env create -f environment.yml`로 환경을 만들 수도 있습니다. Biopython은 필요하지 않습니다.
+- 임시 저장소는 `GENOFLU_TMPDIR`, `TMPDIR`, 시스템 기본값 순으로 선택합니다. 공백 없는 영문 경로의 쓰기 가능한 폴더를 지정하세요.

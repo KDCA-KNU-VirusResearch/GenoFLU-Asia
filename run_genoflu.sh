@@ -40,7 +40,8 @@ done
 [[ -d "$FASTA_DIR" ]] || fail "Input directory does not exist: $FASTA_DIR"
 # Resolve before changing directories, so ./input refers to the caller's folder.
 FASTA_DIR="$(cd -- "$FASTA_DIR" && pwd)"
-OUTPUT_DIR="$(realpath -m -- "$OUTPUT_DIR")"
+mkdir -p -- "$OUTPUT_DIR"
+OUTPUT_DIR="$(cd -- "$OUTPUT_DIR" && pwd)"
 shopt -s nullglob
 FILES=("$FASTA_DIR"/*.fasta)
 (( ${#FILES[@]} )) || fail "No .fasta files found in: $FASTA_DIR"

@@ -38,7 +38,7 @@ Create a dedicated environment once:
 
 ```bash
 conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda \
-  python=3.13 pandas=2.3.2 biopython=1.85 openpyxl=3.1.5 blast=2.17.0
+  python=3.13 pandas=2.3.2 openpyxl=3.1.5 blast=2.17.0
 conda activate genoflu-asia
 ```
 
@@ -162,7 +162,7 @@ This creates a new timestamped workbook in the **current working directory**, or
 
 ### Repeated runs
 
-The project folder must be writable because the program creates its BLAST database, intermediate files, and working workbook there. Run only one analysis at a time in a given project folder.
+BLAST intermediate files are created in an isolated scratch directory; the workbook is written to the output directory. The project folder needs to be writable only when retaining debug files with `-d`.
 
 Each invocation creates a new timestamped workbook with a unique suffix. Earlier workbooks are neither read nor overwritten. All input files in a batch are combined into one new workbook only after they finish successfully.
 
@@ -183,7 +183,7 @@ The 97% threshold applies to the reported local alignment, not necessarily the e
 
 | Column | How to interpret it |
 | --- | --- |
-| `sample` | Input filename-derived prefix plus virus ID. Use `File Name` to distinguish files with similar prefixes. |
+| `sample` | Full input filename stem (without the final extension) plus `__` and the virus ID. |
 | `date` | Analysis timestamp; this is not the collection date. |
 | `File Name` | Source FASTA filename. |
 | `Genotype` | A name from the current key, such as `AS-d.1` or `minor34`, or an unassigned-result message. |
@@ -204,7 +204,7 @@ For example, a mismatch value of `40` means 40 mismatching bases in that selecte
 | A genotype name, e.g. `AS-d.1` | Eight accepted segment groups match a genotype-key entry. | Review sequence quality and individual reference matches; the label is not a confidence score or a measure of disease severity. |
 | A `minor` name, e.g. `minor34` | A defined genotype-key entry whose name contains `minor`. | Treat it as an assigned genotype; `minor` does not mean a failed analysis or low-confidence sequence. |
 | `Not assigned: No Matching Genotypes` | Eight segments pass the identity threshold, but their combination is absent from the key. | Check the segment combination, sequence quality, and current key. This result alone does not establish a novel genotype. |
-| `Not assigned: Only ... segments >97% ...` | Fewer than eight segment assignments pass the threshold. The message says `>97%`, but the code uses **≥97%**. | Identify missing or below-threshold segments and verify the FASTA IDs and completeness. |
+| `Not assigned: Only ... segments >=97% ...` | Fewer than eight segment assignments pass the threshold. The threshold is **≥97%**. | Identify missing or below-threshold segments and verify the FASTA IDs and completeness. |
 | An input virus is absent from the workbook | No reportable BLAST-hit group may have been generated for it. | Compare input IDs with reported IDs; check the input format, reference files, and BLAST availability. |
 
 Genotype labels describe the study's reference-based classification. They do not independently establish HA clade membership, transmission direction, a phylogenetic relationship, or equivalence to another study's genotype nomenclature.
@@ -222,4 +222,22 @@ Genotype labels describe the study's reference-based classification. They do not
 | Results contain repeated rows or earlier samples | Check for a workbook left in the project folder from an interrupted or direct run. Preserve it separately before rerunning. |
 | `Permission denied` when using `./run_genoflu.sh` | Run `chmod +x run_genoflu.sh` and retry `./run_genoflu.sh`; also ensure that the project and output folders are writable. |
 | `blastn failed` or `makeblastdb failed` | Read the diagnostic below the error, correct the reported cause, and rerun. No final workbook is saved for a failed run. |
+
+
+
+### Input validation and reporting
+
+- Empty or malformed FASTA files stop the entire batch before BLAST starts. The error identifies the file and cause; no new workbook is saved.
+- Sequence IDs must be unique within each file. Nucleotide sequences may contain IUPAC ambiguity codes and gap hyphens; empty sequences and invalid characters are rejected.
+- Every input virus is retained in the output. `Not assigned: No BLAST hits` means no reference alignment was returned for that virus.
+- The terminal reports sequence count, input virus count, output row count, and no-hit virus count for each file.
+- `sample` uses the full input filename stem followed by `__` and the virus ID, so `batch_alpha.fasta` and `batch_beta.fasta` remain distinct.
+
+### Environment and temporary storage
+
+- `environment.yml` contains the Conda dependencies: from the project folder, use `conda env create -f environment.yml` as an alternative to the installation command above.
+- `requirements.txt` lists Python packages only; BLAST+ must be installed separately. Biopython is no longer required.
+- BLAST scratch storage uses `GENOFLU_TMPDIR`, then `TMPDIR`, then the operating system default. Choose an existing writable directory with enough space.
+- BLAST requires a simple scratch path containing only ASCII letters, numbers, `_`, `-`, `/`, and `.`. If your `TMPDIR` contains spaces, set a suitable path with `export GENOFLU_TMPDIR=/path/to/scratch`. Input, reference, project, and output paths may still contain spaces or Korean characters.
+- Linux/WSL remain the supported platforms; macOS has not been fully validated.
 

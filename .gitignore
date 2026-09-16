@@ -8,3 +8,7 @@ hpai_geno_db.*
 *.temp/
 input/
 output/
+
+.venv/
+genoflu_results_*.xlsx
+genoflu_debug_*/
