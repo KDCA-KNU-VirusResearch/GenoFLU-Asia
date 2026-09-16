@@ -204,7 +204,7 @@ genoflu-asia --input ./input --output ./output
 | `install_command.sh: No such file or directory` | `pwd`, `ls`로 실제 프로그램 폴더인지 확인 |
 | `No .fasta files found` | 입력 경로와 실제 파일 확장자 확인 |
 | `ModuleNotFoundError` | 올바른 환경이 활성화되어 있고 필요한 패키지가 설치되었는지 확인 |
-| `Use paths with letters...` | 프로그램·입력 경로와 파일명의 한글, 공백, 괄호 등 확인 |
+| `blastn failed` 또는 `makeblastdb failed` | 바로 아래에 표시된 오류 원인을 확인하고 수정 후 다시 실행합니다. 실패한 실행은 최종 엑셀을 저장하지 않습니다. |
 | `Command already exists` | 등록 명령이 이미 존재함. `--help` 확인 후 기존 설치 상태 점검 |
 
 오류가 나면 마지막 한 줄만이 아니라 실행한 명령과 오류 메시지 전체를 보관하세요.

@@ -50,11 +50,6 @@ GENOTYPE_KEY="$SCRIPT_DIR/dependencies/genotype_key_asia.xlsx"
 [[ -f "$GENOFLU_SCRIPT" && -f "$GENOTYPE_KEY" ]] || fail 'Program or genotype key is missing'
 REFS=("$DEPENDENCIES_FASTAS"/*.fasta)
 (( ${#REFS[@]} )) || fail "No reference FASTA files in: $DEPENDENCIES_FASTAS"
-# genoflu.py currently uses shell-based BLAST calls with unquoted paths.
-# Reject unsupported paths explicitly instead of silently producing partial output.
-for path in "$SCRIPT_DIR" "${FILES[@]}" "${REFS[@]}"; do
-  [[ "$path" =~ ^[a-zA-Z0-9_./-]+$ ]] || fail "Use paths with letters, numbers, underscores, hyphens and dots only: $path"
-done
 for executable in python blastn makeblastdb; do
   command -v "$executable" >/dev/null || fail "$executable is unavailable; activate the genoflu-asia Conda environment"
 done

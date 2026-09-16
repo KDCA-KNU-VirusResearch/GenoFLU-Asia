@@ -11,6 +11,7 @@ import glob
 import argparse
 import textwrap
 import tempfile
+import subprocess
 import pandas as pd
 from collections import defaultdict
 from datetime import datetime
@@ -19,6 +20,23 @@ from Bio import SeqIO
 
 # Fixed study criterion for reference-based segment assignment.
 PIDENT_THRESHOLD = 97.0
+
+
+def run_external(command, input_data=None, cwd=None):
+    """Run a tool without a shell and stop with its diagnostics on failure."""
+    try:
+        result = subprocess.run(command, input=input_data, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, check=True, cwd=cwd)
+    except FileNotFoundError:
+        raise SystemExit(f'Error: {command[0]} was not found. Activate the environment containing BLAST+.')
+    except subprocess.CalledProcessError as exc:
+        diagnostic = (exc.stderr or exc.stdout or b'No diagnostic output.').decode('utf-8', errors='replace').strip()
+        raise SystemExit(f'Error: {command[0]} failed (exit code {exc.returncode}).\n{diagnostic}')
+    except OSError as exc:
+        raise SystemExit(f'Error: unable to run {command[0]}: {exc}')
+    if result.stderr:
+        print(result.stderr.decode('utf-8', errors='replace').rstrip(), file=sys.stderr)
+    return result
 
 class bcolors:
     PURPLE = '\033[95m'
@@ -69,19 +87,18 @@ class Blast_Fasta(bcolors):
         format="6 qseqid qseq length nident pident mismatch evalue bitscore sacc stitle",
         num_alignment=1,
         blast_db="hpai_geno_db",
-        num_threads=2
+        num_threads=2,
+        working_dir=None
     ):
         FASTA_abs_path = FASTA
         FASTA_name = os.path.basename(FASTA_abs_path)
         sample_name = re.sub('[_.].*', '', FASTA_name)
         self.sample_name = sample_name
         self.blast_db = blast_db
-        blastout_file = f'{sample_name}_blast_out.txt'
-        os.system(
-            f'blastn -query {FASTA_abs_path} -db {blast_db} -word_size 11 '
-            f'-out {blastout_file} -outfmt "{format}" -num_alignments {num_alignment} '
-            f'-num_threads={num_threads} 2> /dev/null'
-        )
+        blastout_file = os.path.join(working_dir or '.', 'query_blast_out.txt')
+        run_external(['blastn', '-query', FASTA_abs_path, '-db', blast_db,
+                      '-word_size', '11', '-out', blastout_file, '-outfmt', format,
+                      '-num_alignments', str(num_alignment), '-num_threads', str(num_threads)], cwd=working_dir)
         self.blastout_file = blastout_file
 
         self._raw_lines = []
@@ -164,18 +181,34 @@ class GenoFLU():
         - Load the genotype key and assign genotypes.
         """
         # Build the BLAST database.
-        os.system(
-            f'cat {self.FASTA_dir}/*.fasta | makeblastdb -dbtype nucl -out hpai_geno_db -title hpai_geno_db > /dev/null 2>&1'
-        )
-
-        # Run BLAST with one subject alignment requested; multiple HSPs may be returned.
-        blast_hpai_genotyping = Blast_Fasta(
-            FASTA=self.FASTA_abs_path,
-            format="6 qseqid qseq length nident pident mismatch evalue bitscore sacc stitle",
-            num_alignment=1,
-            blast_db='hpai_geno_db',
-            num_threads=2
-        )
+        reference_files = sorted(glob.glob(os.path.join(self.FASTA_dir, '*.fasta')))
+        if not reference_files:
+            raise SystemExit(f'Error: no reference FASTA files found in {self.FASTA_dir}')
+        reference_data = bytearray()
+        for reference_file in reference_files:
+            try:
+                with open(reference_file, 'rb') as reference:
+                    reference_data.extend(reference.read())
+            except OSError as exc:
+                raise SystemExit(f'Error: cannot read reference FASTA {reference_file}: {exc}')
+        # BLAST may split database paths containing spaces internally. Stage all
+        # tool inputs in a simple Linux temporary path, independent of user paths.
+        with tempfile.TemporaryDirectory(prefix='genoflu_blast_', dir='/tmp') as work:
+            query = os.path.join(work, 'query.fasta')
+            shutil.copyfile(self.FASTA_abs_path, query)
+            try:
+                run_external(['makeblastdb', '-dbtype', 'nucl', '-out', 'hpai_geno_db',
+                              '-title', 'hpai_geno_db'], input_data=bytes(reference_data), cwd=work)
+                blast_hpai_genotyping = Blast_Fasta(
+                    FASTA=query,
+                    format="6 qseqid qseq length nident pident mismatch evalue bitscore sacc stitle",
+                    num_alignment=1, blast_db='hpai_geno_db', num_threads=2,
+                    working_dir=work)
+            finally:
+                if self.debug:
+                    debug_dir = tempfile.mkdtemp(prefix='genoflu_debug_', dir=os.getcwd())
+                    shutil.copytree(work, debug_dir, dirs_exist_ok=True)
+                    print(f'Debug files: {debug_dir}')
 
         blast_genotyping_by_virus = defaultdict(dict)
 
@@ -234,20 +267,6 @@ class GenoFLU():
                     genes_sorted = list(gm.keys())
                 print(f"  - {vid}: {len(gm)} segments, genes={genes_sorted}")
             print()
-
-        # Collect temporary BLAST files; remove them unless debug mode is enabled.
-        blast_dir = f'{self.sample_name}_blast_hpia_genotyping_dir'
-        os.makedirs(blast_dir, exist_ok=True)
-        files_grab = []
-        for patt in ('*_blast*txt', 'batch.sh',):
-            files_grab.extend(glob.glob(patt))
-        for each in files_grab:
-            try:
-                shutil.move(each, blast_dir)
-            except Exception:
-                pass
-        if not self.debug:
-            shutil.rmtree(blast_dir, ignore_errors=True)
 
         # Load the genotype key using unique internal keys for duplicate names.
         df = pd.read_excel(self.cross_reference)
@@ -448,21 +467,6 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
         for virus_id, result in genoflu.results_per_virus.items():
             used = ', '.join(genoflu.genotype_list_used_per_virus.get(virus_id, []))
             print(f'\n{genoflu.sample_name}__{virus_id} Genotype --> {result["genotype"]}: {used}\n')
-
-        # Clean up temporary files.
-        temp_dir = f'{FASTA_abs_path}.temp'
-        os.makedirs(temp_dir, exist_ok=True)
-        files_grab = []
-        for patt in ('hpai_geno_db.*', 'slurm*.out'):
-            files_grab.extend(glob.glob(patt))
-        for each in files_grab:
-            try:
-                shutil.move(each, temp_dir)
-            except Exception:
-                pass
-
-        if args.debug is False:
-            shutil.rmtree(temp_dir, ignore_errors=True)
 
     output_file = excel_stats.write_all_results_rows(all_rows)
     print(f"Results: {output_file}")

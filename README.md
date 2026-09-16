@@ -47,7 +47,7 @@ The project files, Conda environment, and analysis files serve different purpose
 - **Project location:** keep the project in a working folder; it does not need to be inside Conda's `envs` directory.
 - **`~`:** your Linux home folder, for example `/home/user`.
 - **`cd`:** changes your current folder. **`conda activate`:** selects an environment without changing folders.
-- **Paths:** use English letters, numbers, `_`, `-`, and `.` in project and input folder/file names; avoid spaces, parentheses, and non-ASCII characters.
+- **Paths:** folder and file names may contain spaces, parentheses, or Korean characters on Linux/WSL. Enclose paths containing spaces in double quotes, for example `--input "/home/user/my data/input"`.
 
 ### 1. Clone the repository — once
 

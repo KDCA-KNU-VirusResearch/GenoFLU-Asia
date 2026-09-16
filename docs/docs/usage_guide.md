@@ -87,7 +87,7 @@ genoflu_asia_analysis/input/
 
 Use lowercase `.fasta` extensions. The batch script reads files directly inside this folder; subfolders and `.fa`, `.fna`, or `.FASTA` files are not included. This adaptation accepts assembled **FASTA**, not raw FASTQ reads.
 
-The batch command currently requires program, input, and reference paths to use ASCII letters, numbers, underscores, hyphens, dots, and directory separators. It rejects unsupported paths because the underlying Python BLAST calls do not quote them. Output paths are quoted and may contain spaces.
+On Linux/WSL, program, input, reference, and output paths may contain spaces, parentheses, or Korean characters. Quote paths containing spaces in terminal commands. BLAST runs in an isolated temporary directory. If `makeblastdb` or `blastn` fails, execution stops with the tool name, exit code, and diagnostic message; no final workbook is written. With `-d`, temporary files are retained in a uniquely named `genoflu_debug_*` directory.
 
 ### 2. Check the FASTA headers
 
@@ -221,5 +221,5 @@ Genotype labels describe the study's reference-based classification. They do not
 | All or many samples are unassigned | Check BLAST availability, reference/key consistency, FASTA header grouping, and the per-segment identities. Do not infer a new genotype from a failed run. |
 | Results contain repeated rows or earlier samples | Check for a workbook left in the project folder from an interrupted or direct run. Preserve it separately before rerunning. |
 | `Permission denied` when using `./run_genoflu.sh` | Run `chmod +x run_genoflu.sh` and retry `./run_genoflu.sh`; also ensure that the project and output folders are writable. |
-| Paths containing spaces or parentheses fail | Move the project/input to simple paths and pass the new paths using `--input` and `--output`. |
+| `blastn failed` or `makeblastdb failed` | Read the diagnostic below the error, correct the reported cause, and rerun. No final workbook is saved for a failed run. |
 
