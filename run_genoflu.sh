@@ -14,7 +14,7 @@ Usage: genoflu-asia [--input DIR] [--output DIR]
 
   -i, --input DIR   Folder containing lowercase .fasta files
                    Default: $HOME/genoflu_fasta
-  -o, --output DIR  Destination for genoflu_combined_results.xlsx
+  -o, --output DIR  Folder for new timestamped result workbooks
                    Default: $HOME/genoflu_output
   -h, --help        Show help without running an analysis
 
@@ -61,14 +61,5 @@ done
 mkdir -p -- "$OUTPUT_DIR"
 cd -- "$SCRIPT_DIR"
 printf 'Input: %s\nOutput: %s\n' "$FASTA_DIR" "$OUTPUT_DIR"
-for FILE in "${FILES[@]}"; do
-  FILENAME="$(basename -- "$FILE" .fasta)"
-  printf 'Processing %s...\n' "$FILENAME"
-  python "$GENOFLU_SCRIPT" -f "$FILE" -i "$DEPENDENCIES_FASTAS" -c "$GENOTYPE_KEY"
-  printf '%s completed.\n' "$FILENAME"
-done
-[[ -f genoflu_combined_results.xlsx ]] || fail 'No result workbook was produced; inspect input sequences and BLAST results'
-if [[ "$OUTPUT_DIR" != "$SCRIPT_DIR" ]]; then
-  mv -- genoflu_combined_results.xlsx "$OUTPUT_DIR/genoflu_combined_results.xlsx"
-fi
-printf 'Results: %s/genoflu_combined_results.xlsx\nAll files processed.\n' "$OUTPUT_DIR"
+python "$GENOFLU_SCRIPT" -f "${FILES[@]}" -i "$DEPENDENCIES_FASTAS" -c "$GENOTYPE_KEY" --output "$OUTPUT_DIR"
+printf 'All files processed.\n'

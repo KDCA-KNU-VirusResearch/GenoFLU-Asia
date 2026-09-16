@@ -118,7 +118,7 @@ cd ~/genoflu_asia_analysis
 genoflu-asia --input ./input --output ./output
 ```
 
-The input folder must already contain lowercase `.fasta` files. **Relative paths are resolved from the directory where you invoke the command.** The output folder is created if needed. The final workbook is `./output/genoflu_combined_results.xlsx`, with results in **All Results**.
+The input folder must already contain lowercase `.fasta` files. **Relative paths are resolved from the directory where you invoke the command.** The output folder is created if needed. The final workbook is `./output/genoflu_results_DATE_TIME_ID.xlsx`, with results in **All Results**.
 
 To use the folders created in the previous section:
 
@@ -158,13 +158,13 @@ python genoflu.py \
   -c dependencies/genotype_key_asia.xlsx
 ```
 
-This writes or appends to `genoflu_combined_results.xlsx` in the **current working directory**. It does not use the batch command's `--output` option. Always supply `-i` and `-c` for direct execution, because the Python defaults refer to the original reference paths. Use `python genoflu.py --help` to inspect available options.
+This creates a new timestamped workbook in the **current working directory**, or in the directory supplied with `--output`. Reference defaults resolve beside the Python script to the bundled Asia references. Use `python genoflu.py --help` to inspect available options.
 
 ### Repeated runs
 
 The project folder must be writable because the program creates its BLAST database, intermediate files, and working workbook there. Run only one analysis at a time in a given project folder.
 
-Before a separate run, preserve the previous output by renaming it or choosing another output folder. The batch script can overwrite an existing output workbook. If an interrupted batch or direct Python run left a workbook in the project folder, move or rename it before starting a new analysis; otherwise, new rows may be appended to it.
+Each invocation creates a new timestamped workbook with a unique suffix. Earlier workbooks are neither read nor overwritten. All input files in a batch are combined into one new workbook only after they finish successfully.
 
 ## Understand the results
 

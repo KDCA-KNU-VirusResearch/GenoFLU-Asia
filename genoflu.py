@@ -10,6 +10,7 @@ import shutil
 import glob
 import argparse
 import textwrap
+import tempfile
 import pandas as pd
 from collections import defaultdict
 from datetime import datetime
@@ -18,9 +19,6 @@ from Bio import SeqIO
 
 # Fixed study criterion for reference-based segment assignment.
 PIDENT_THRESHOLD = 97.0
-
-combined_excel_filename = "genoflu_combined_results.xlsx"
-
 
 class bcolors:
     PURPLE = '\033[95m'
@@ -36,26 +34,29 @@ class bcolors:
 
 class Excel_Stats:
     """
-    Append results only to the "All Results" sheet in the combined workbook.
+    Write one new, uniquely named workbook for the current invocation.
     """
-    def __init__(self, sample_name):
-        self.sample_name = sample_name
-        self.date_stamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    def __init__(self, output_dir):
+        self.output_dir = os.path.abspath(output_dir)
+        self.date_stamp = datetime.now().strftime('%Y%m%d_%H%M%S_%f')
 
     def write_all_results_rows(self, rows):
         """
         rows: a list of dictionaries, with one result row per virus.
         """
-        df = pd.DataFrame(rows)
-        if os.path.exists(combined_excel_filename):
-            with pd.ExcelWriter(combined_excel_filename, mode='a', if_sheet_exists='overlay') as writer:
-                if "All Results" in writer.sheets:
-                    start_row = writer.sheets["All Results"].max_row
-                    df.to_excel(writer, sheet_name="All Results", index=False, header=False, startrow=start_row)
-                else:
-                    df.to_excel(writer, sheet_name="All Results", index=False)
-        else:
-            df.to_excel(combined_excel_filename, sheet_name="All Results", index=False)
+        if not rows:
+            raise RuntimeError('No result rows were produced; no workbook was saved.')
+        os.makedirs(self.output_dir, exist_ok=True)
+        # Exclusive creation adds a random suffix, preventing same-time collisions.
+        fd, filename = tempfile.mkstemp(prefix=f'genoflu_results_{self.date_stamp}_',
+                                        suffix='.xlsx', dir=self.output_dir)
+        os.close(fd)
+        try:
+            pd.DataFrame(rows).to_excel(filename, sheet_name='All Results', index=False)
+        except BaseException:
+            os.unlink(filename)
+            raise
+        return filename
 
 
 class Blast_Fasta(bcolors):
@@ -385,14 +386,15 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
         -n is the sample name to force output files to this sample name versus taking the name to be anything before [_.]
 
         Summary:
-            Combined-only mode: writes ONLY "genoflu_combined_results.xlsx" (no per-file xlsx/tsv).
-            Multi-sample FASTA is supported; rows are appended per virus in "All Results" sheet.
+            Write one new genoflu_results_DATE_TIME_ID.xlsx per invocation.
+            Multiple FASTA files and viruses are combined in the "All Results" sheet.
             With -d/--debug, print virus groups and their segment counts/genes and retain temporary files.
             Duplicate Genotype names in genotype_key_asia.xlsx are supported safely (internal unique keys).
         '''), epilog='''---------------------------------------------------------'''
     )
 
-    parser.add_argument('-f', '--fasta', action='store', dest='FASTA', required=True, help='Assembled FASTA')
+    parser.add_argument('-f', '--fasta', nargs='+', dest='FASTA', required=True, help='One or more assembled FASTA files')
+    parser.add_argument('-o', '--output', default='.', help='Output directory for a new timestamped workbook (default: current directory)')
     parser.add_argument('-i', '--FASTA_dir', action='store', dest='FASTA_dir', default=None,
                         help='Reference FASTA directory. Default: dependencies/asia_fastas beside this script')
     parser.add_argument('-c', '--cross_reference', action='store', dest='cross_reference', default=None,
@@ -409,57 +411,61 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
         print(f'\t{key}:  {value}')
     print("\n")
 
-    # Resolve input paths.
-    FASTA_abs_path = os.path.abspath(args.FASTA)
-    try:
-        FASTA_dir = os.path.abspath(args.FASTA_dir) if args.FASTA_dir else None
-    except TypeError:
-        FASTA_dir = args.FASTA_dir
-    try:
-        cross_reference = os.path.abspath(args.cross_reference) if args.cross_reference else None
-    except TypeError:
-        cross_reference = args.cross_reference
-
-    # Run GenoFLU-Asia.
-    genoflu = GenoFLU(
-        FASTA=FASTA_abs_path,
-        FASTA_dir=FASTA_dir,
-        cross_reference=cross_reference,
-        sample_name=args.sample_name,
-        debug=args.debug
-    )
-
-    try:
-        genoflu.get_metadata()
-    except Exception:
-        pass
-
-    genoflu.blast_hpai_genomes()
-
-    # Write results only to the combined workbook.
-    excel_stats = Excel_Stats(genoflu.sample_name)
-    rows = genoflu.excel_rows()
-    excel_stats.write_all_results_rows(rows)
-
-    # Print genotype assignments.
-    for virus_id, result in genoflu.results_per_virus.items():
-        used = ', '.join(genoflu.genotype_list_used_per_virus.get(virus_id, []))
-        print(f'\n{genoflu.sample_name}__{virus_id} Genotype --> {result["genotype"]}: {used}\n')
-
-    # Clean up temporary files.
-    temp_dir = f'{FASTA_abs_path}.temp'
-    os.makedirs(temp_dir, exist_ok=True)
-    files_grab = []
-    for patt in ('hpai_geno_db.*', 'slurm*.out'):
-        files_grab.extend(glob.glob(patt))
-    for each in files_grab:
+    excel_stats = Excel_Stats(args.output)
+    all_rows = []
+    for input_fasta in args.FASTA:
+        # Resolve input paths.
+        FASTA_abs_path = os.path.abspath(input_fasta)
         try:
-            shutil.move(each, temp_dir)
+            FASTA_dir = os.path.abspath(args.FASTA_dir) if args.FASTA_dir else None
+        except TypeError:
+            FASTA_dir = args.FASTA_dir
+        try:
+            cross_reference = os.path.abspath(args.cross_reference) if args.cross_reference else None
+        except TypeError:
+            cross_reference = args.cross_reference
+
+        # Run GenoFLU-Asia.
+        genoflu = GenoFLU(
+            FASTA=FASTA_abs_path,
+            FASTA_dir=FASTA_dir,
+            cross_reference=cross_reference,
+            sample_name=args.sample_name,
+            debug=args.debug
+        )
+
+        try:
+            genoflu.get_metadata()
         except Exception:
             pass
 
-    if args.debug is False:
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        genoflu.blast_hpai_genomes()
+
+        # Accumulate only this invocation; publish after every input succeeds.
+        all_rows.extend(genoflu.excel_rows())
+
+        # Print genotype assignments.
+        for virus_id, result in genoflu.results_per_virus.items():
+            used = ', '.join(genoflu.genotype_list_used_per_virus.get(virus_id, []))
+            print(f'\n{genoflu.sample_name}__{virus_id} Genotype --> {result["genotype"]}: {used}\n')
+
+        # Clean up temporary files.
+        temp_dir = f'{FASTA_abs_path}.temp'
+        os.makedirs(temp_dir, exist_ok=True)
+        files_grab = []
+        for patt in ('hpai_geno_db.*', 'slurm*.out'):
+            files_grab.extend(glob.glob(patt))
+        for each in files_grab:
+            try:
+                shutil.move(each, temp_dir)
+            except Exception:
+                pass
+
+        if args.debug is False:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+    output_file = excel_stats.write_all_results_rows(all_rows)
+    print(f"Results: {output_file}")
 
 # Created 2023 by Tod Stuber
 # GenoFLU-Asia adaptation: multi-virus input and combined workbook output.

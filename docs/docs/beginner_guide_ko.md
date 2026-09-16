@@ -168,7 +168,7 @@ genoflu-asia --input ~/genoflu_asia_analysis/input --output ~/genoflu_asia_analy
 explorer.exe ~/genoflu_asia_analysis/output
 ```
 
-`genoflu_combined_results.xlsx`를 열어 `All Results` 시트를 확인합니다.
+`genoflu_results_DATE_TIME_ID.xlsx`를 열어 `All Results` 시트를 확인합니다.
 
 - `Genotype`: 지정된 genotype입니다. `minor`도 정상적인 분류명입니다.
 - `Not assigned: No Matching Genotypes`: 참조 key에 일치하는 조합이 없다는 뜻이며, 이것만으로 신규 genotype이 입증되지는 않습니다.
@@ -183,7 +183,7 @@ explorer.exe ~/genoflu_asia_analysis/output
 같은 input과 output 폴더를 계속 사용합니다. 환경 생성·명령 등록·분석 폴더 생성을 반복할 필요가 없습니다.
 
 1. input에서 이번에 분석하지 않을 FASTA 파일을 다른 곳으로 옮기고 새 파일을 넣습니다. 남겨 둔 모든 .fasta 파일이 다시 분석됩니다.
-2. 이전 결과가 필요하면 output/genoflu_combined_results.xlsx를 다른 이름으로 바꾸거나 복사해 보관합니다. 다음 실행은 같은 결과 파일명을 사용합니다.
+2. 결과 파일은 실행 날짜·시간과 고유 식별자가 붙은 새 이름으로 저장됩니다. 이전 결과를 옮기거나 이름을 바꿀 필요가 없습니다.
 3. 다음 명령을 실행합니다.
 
 ```bash
@@ -192,7 +192,7 @@ cd ~/genoflu_asia_analysis
 genoflu-asia --input ./input --output ./output
 ```
 
-분석이 중단되었다면 프로그램 폴더에 남은 genoflu_combined_results.xlsx를 먼저 별도로 보관하고 재시작합니다. 남은 파일에 새 결과가 이어 붙을 수 있습니다. 같은 프로그램 폴더로 여러 분석을 동시에 실행하지 않습니다.
+분석이 중단되면 같은 명령으로 다시 실행합니다. 이전 Excel에는 이어 붙이지 않으며 모든 입력 분석이 성공한 뒤 새 Excel 하나를 저장합니다. BLAST 임시 파일은 공유하므로 같은 프로그램 폴더로 여러 분석을 동시에 실행하지 않습니다.
 
 ## 10. 자주 만나는 메시지
 
