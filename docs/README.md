@@ -160,12 +160,12 @@ All segments of a virus must share the same ID before the first `|`.
 ### Input FASTA example
 
 ```text
->23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|1
-ATGGAGAGAATAAAAGAATTAAGA...
->23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|2
-ATGGATGTCAATCCGACTTTACTT...
->23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|3
-ATGATTGTCGAGCTTGCGGAAAA...
+>A/wild_duck/Korea/H503/2022|EPI_ISL_19453422|1
+ATGGAGAGAATGAAAGAACTAAGAG...
+>A/wild_duck/Korea/H503/2022|EPI_ISL_19453422|2
+ATGGATGTCAATCCGACTTTACTTT...
+>A/wild_duck/Korea/H503/2022|EPI_ISL_19453422|3
+ATGATTGTCGAGCTTGCGGAAAAAGC...
 ```
 
 Abbreviated example showing three sequence records from one virus. Each header starts with `>` on its own line, followed by the nucleotide sequence on the next line. The sequences above are excerpts; use the actual nucleotide sequences without ellipses (`...`) in the input file.
@@ -238,9 +238,9 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 
 ## Interpreting results
 
-![Example output workbook](docs/output_workbook_example.svg)
+![Example output workbook](docs/output_workbook_example.svg?v=4)
 
-*Example output from the All Results sheet. The first data row and all nine output columns are shown, with cell text wrapped for readability.*
+*Example output from the All Results sheet. The H503 result and all nine output columns are shown. The genotype prefix has been removed from the sample name; other result values are unchanged.*
 
 A genotype is assigned when all eight accepted segment groups match an entry in `genotype_key_asia.xlsx`.
 

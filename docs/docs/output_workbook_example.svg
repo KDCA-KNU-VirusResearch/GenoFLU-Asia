@@ -4,8 +4,7 @@
 <rect x="25" y="70" width="420" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="37" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">sample</text>
 <rect x="25" y="170" width="420" height="300" fill="white" stroke="#cbd5d0"/>
-<text x="37" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">genoflu__23AS-b.1.5.2_A/duck/Vietnam</text>
-<text x="37" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">/Raho7-23S-4852/2023</text>
+<text x="37" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">genoflu__A/wild_duck/Korea/H503/2022</text>
 <rect x="445" y="70" width="230" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="457" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">date</text>
 <rect x="445" y="170" width="230" height="300" fill="white" stroke="#cbd5d0"/>
@@ -18,44 +17,44 @@
 <rect x="975" y="70" width="180" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="987" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">Genotype</text>
 <rect x="975" y="170" width="180" height="300" fill="white" stroke="#cbd5d0"/>
-<text x="987" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="600">AS-b.1.5.2</text>
+<text x="987" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="600">AS-c.1.2</text>
 <rect x="1155" y="70" width="390" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="1167" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">Genotype List Used, &gt;=97%</text>
 <rect x="1155" y="170" width="390" height="300" fill="white" stroke="#cbd5d0"/>
-<text x="1167" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB2:PB2_group64,</text>
-<text x="1167" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB1:PB1_group45, PA:PA_group6,</text>
-<text x="1167" y="257" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">HA:HA_G2b, NP:NP_group6,</text>
-<text x="1167" y="284" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NA:NA_group6, MP:MP_group1,</text>
-<text x="1167" y="311" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NS:NS_group6</text>
+<text x="1167" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB2:PB2_group23,</text>
+<text x="1167" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB1:PB1_group14, PA:PA_group14,</text>
+<text x="1167" y="257" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">HA:HA_G2c, NP:NP_group14,</text>
+<text x="1167" y="284" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NA:NA_group14, MP:MP_group1,</text>
+<text x="1167" y="311" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NS:NS_group14</text>
 <rect x="1545" y="70" width="460" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="1557" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">Genotype Sample Title List</text>
 <rect x="1545" y="170" width="460" height="300" fill="white" stroke="#cbd5d0"/>
-<text x="1557" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB2:PB2_group64:EPI_ISL_19863948,</text>
-<text x="1557" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB1:PB1_group45:EPI_ISL_19898358,</text>
-<text x="1557" y="257" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PA:PA_group6:EPI_ISL_20069731,</text>
-<text x="1557" y="284" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">HA:HA_G2b:EPI_ISL_20064330,</text>
-<text x="1557" y="311" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NP:NP_group6:EPI_ISL_20069731,</text>
-<text x="1557" y="338" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NA:NA_group6:EPI_ISL_18286356,</text>
-<text x="1557" y="365" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">MP:MP_group1:EPI_ISL_9638156,</text>
-<text x="1557" y="392" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NS:NS_group6:EPI_ISL_20069731</text>
+<text x="1557" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB2:PB2_group23:EPI_ISL_12572662,</text>
+<text x="1557" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PB1:PB1_group14:EPI_ISL_18720869,</text>
+<text x="1557" y="257" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">PA:PA_group14:EPI_ISL_18007229,</text>
+<text x="1557" y="284" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">HA:HA_G2c:EPI_ISL_20415768,</text>
+<text x="1557" y="311" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NP:NP_group14:EPI_ISL_12572664,</text>
+<text x="1557" y="338" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NA:NA_group14:EPI_ISL_18472589,</text>
+<text x="1557" y="365" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">MP:MP_group1:EPI_ISL_18286245,</text>
+<text x="1557" y="392" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">NS:NS_group14:EPI_ISL_18720869</text>
 <rect x="2005" y="70" width="320" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="2017" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">Genotype Percent Match</text>
 <text x="2017" y="123" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">List</text>
 <rect x="2005" y="170" width="320" height="300" fill="white" stroke="#cbd5d0"/>
-<text x="2017" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">99.87%, 98.94%, 98.68%,</text>
-<text x="2017" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">98.42%, 99.40%, 97.66%,</text>
-<text x="2017" y="257" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">98.10%, 98.69%</text>
+<text x="2017" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">99.43%, 99.12%, 98.63%,</text>
+<text x="2017" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">99.30%, 99.40%, 99.36%,</text>
+<text x="2017" y="257" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">99.58%, 98.81%</text>
 <rect x="2325" y="70" width="250" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="2337" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">Genotype Mismatch</text>
 <text x="2337" y="123" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">List</text>
 <rect x="2325" y="170" width="250" height="300" fill="white" stroke="#cbd5d0"/>
-<text x="2337" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">3, 24, 28, 27, 9,</text>
-<text x="2337" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">33, 18, 11</text>
+<text x="2337" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">13, 20, 29, 12, 9,</text>
+<text x="2337" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">9, 4, 10</text>
 <rect x="2575" y="70" width="330" height="100" fill="#eaf3ed" stroke="#cbd5d0"/>
 <text x="2587" y="98" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">Genotype Average Depth of</text>
 <text x="2587" y="123" font-family="Arial,sans-serif" font-size="18" fill="#172b3a" font-weight="600">Coverage List</text>
 <rect x="2575" y="170" width="330" height="300" fill="white" stroke="#cbd5d0"/>
 <text x="2587" y="203" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">Ran on FASTA - No Coverage</text>
 <text x="2587" y="230" font-family="Arial,sans-serif" font-size="19" fill="#172b3a" font-weight="400">Report</text>
-<text x="25" y="510" font-family="Arial,sans-serif" font-size="17" fill="#172b3a" font-weight="400">First data row from the supplied workbook. All nine columns; cell text is wrapped for display.</text>
+<text x="25" y="510" font-family="Arial,sans-serif" font-size="17" fill="#172b3a" font-weight="400">H503 result from the supplied workbook. Genotype prefix removed from sample; all nine columns shown.</text>
 </svg>
