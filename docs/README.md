@@ -6,11 +6,11 @@ Reference-based genotype assignment for Asian H5 avian influenza viruses in clad
 
 ## Overview
 
-GenoFLU-Asia is a genotyping tool developed to support harmonized classification of clade 2.3.4.4b H5 avian influenza viruses circulating in Asia. These viruses exhibit diverse genomic constellations that are not fully resolved by existing regional and global genotyping systems. Differences in genotype nomenclature across countries and institutions further complicate comparisons, highlighting the need for a shared Asian classification framework.
+GenoFLU-Asia is a genotyping tool designed to support the standardized classification of clade 2.3.4.4b H5 avian influenza viruses circulating in Asia. These viruses exhibit highly diverse genomic constellations that differ substantially from those circulating in other regions. Consequently, existing genotyping tools, such as GenoFLU and GenIn, may not adequately classify many Asian viruses. Differences in genotype nomenclature among countries and institutions further complicate comparisons, highlighting the need for a harmonized genotyping framework for Asia.
 
-Developed in collaboration with the **Korea Disease Control and Prevention Agency (KDCA), Republic of Korea**, GenoFLU-Asia builds on **[USDA-VS/GenoFLU](https://github.com/USDA-VS/GenoFLU)**. Phylogenetic analyses of all eight genome segments from Asian viruses collected during **2021–2026**, with HA genes belonging to **clade 2.3.4.4b group G2**, informed a harmonized genotype nomenclature, an Asia-specific reference sequence database, and a corresponding genotype key.
+GenoFLU-Asia was developed based on the USDA-VS/GenoFLU program through a collaboration between the Korea Disease Control and Prevention Agency (KDCA) and Kyungpook National University, Republic of Korea. The tool automatically assigns genotypes to clade 2.3.4.4b H5 avian influenza viruses detected in Asia since 2021 using a newly established genotype nomenclature system.
 
-GenoFLU-Asia uses BLAST-based sequence comparisons to assign segment groups and identify genotypes from their eight-segment combinations. It supports multiple viruses in FASTA input and compiles assignments into a single Excel workbook, providing a consistent approach to genotype assignment and genomic surveillance across Asia.
+GenoFLU-Asia uses BLAST-based sequence comparisons to assign each genomic segment to a segment group and determines the viral genotype based on the resulting eight-segment constellation. The tool supports batch analysis of multiple viruses provided in FASTA format and compiles all assignment results into a single Excel workbook. It thereby provides a consistent and efficient approach to genotype assignment and genomic surveillance of clade 2.3.4.4b H5 viruses across Asia.
 
 ## Genotype classification and nomenclature
 
