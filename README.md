@@ -160,6 +160,12 @@ Header examples:
 
 These are header examples only, not a runnable input file; each must be followed by its corresponding real nucleotide sequence.
 
+### Input FASTA example
+
+![Input FASTA viewed in a sequence editor](docs/docs/input_fasta_example.png)
+
+*Example input FASTA displayed in a sequence editor. This is a viewing example, not a required software or alignment step; prepare headers as described above.*
+
 ### Run
 
 ```bash
@@ -226,6 +232,10 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 - **Input provenance:** the selected records retain their original FASTA headers, accession identifiers, and nucleotide sequences from the supplied dataset. Major/minor labels follow the study genotype key, not the number of examples in this test file.
 
 ## Interpreting results
+
+![Example output workbook](docs/docs/output_workbook_example.svg)
+
+*Example output from the All Results sheet, reformatted from supplied results. The first three rows and selected columns are shown; segment details correspond to the first row.*
 
 A genotype is assigned when all eight accepted segment groups match an entry in `genotype_key_asia.xlsx`.
 
