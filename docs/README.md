@@ -151,14 +151,18 @@ All segments of a virus must share the same ID before the first `|`.
 - Include all eight segments: **PB2, PB1, PA, HA, NP, NA, MP, and NS**.
 - Follow each header with its corresponding nucleotide sequence.
 
-Header examples:
+FASTA format example:
 
 ```text
->sample01|PB2
->sample01|PB1
+>23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|1
+ATGGAGAGAATAAAAGAATTAAGAGATTTG...
+>23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|2
+ATGGATGTCAATCCGACTTTACTT
+>23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|3
+ATGATTGTCGAGCTTGCGGAAAAGGC....
 ```
 
-These are header examples only, not a runnable input file; each must be followed by its corresponding real nucleotide sequence.
+Abbreviated example showing three sequence records from one virus. Each header starts with `>` on its own line, followed by the nucleotide sequence on the next line. The sequences above are excerpts; use the actual nucleotide sequences without ellipses (`...`) in the input file.
 
 ### Input FASTA example
 
@@ -235,7 +239,7 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 
 ![Example output workbook](docs/output_workbook_example.svg)
 
-*Example output from the All Results sheet. The first data row and selected columns are shown, with cell text wrapped for readability.*
+*Example output from the All Results sheet. The first data row and all nine output columns are shown, with cell text wrapped for readability.*
 
 A genotype is assigned when all eight accepted segment groups match an entry in `genotype_key_asia.xlsx`.
 
