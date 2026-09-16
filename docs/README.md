@@ -235,7 +235,7 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 
 ![Example output workbook](docs/output_workbook_example.svg)
 
-*Example output from the All Results sheet, reformatted from supplied results. The first three rows and selected columns are shown; segment details correspond to the first row.*
+*Example output from the All Results sheet. The first data row and selected columns are shown, with cell text wrapped for readability.*
 
 A genotype is assigned when all eight accepted segment groups match an entry in `genotype_key_asia.xlsx`.
 
