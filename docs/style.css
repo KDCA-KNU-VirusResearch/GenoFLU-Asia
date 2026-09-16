@@ -13,3 +13,5 @@ header nav a[aria-current=page]{color:var(--teal);box-shadow:0 2px var(--teal);p
 .primary-wordmark{display:block;width:230px;height:auto;max-height:86px;object-fit:contain}@media(max-width:720px){.primary-wordmark{width:210px;max-height:76px}}
 .hero-brand{margin:0 0 28px;line-height:1}.hero-brand img{display:block;width:100%;height:auto}.hero .herocopy{min-width:0}@media(max-width:720px){.hero-brand{margin:0 -10px 25px}.hero-brand img{width:100%}}
 .docbody h3{font-size:22px;line-height:1.35;margin:32px 0 16px}.docbody li{margin-bottom:8px;color:var(--gray)}.docbody li a{text-decoration:underline;color:var(--teal)}.docbody .code-actions{justify-content:flex-end;margin-bottom:-8px}.reference-docs{min-height:0;padding-top:30px;padding-bottom:40px}
+
+.hero.hero-single{grid-template-columns:1fr}.hero-single .herocopy{width:100%;max-width:800px;margin-inline:auto}.hero-single .intro{max-width:640px}
