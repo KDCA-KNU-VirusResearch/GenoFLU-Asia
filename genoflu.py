@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = "1.13-combined-only-debug-dup-genotype-safe"
+__version__ = "1.0.0"
 
 import os
 import sys
@@ -33,7 +33,7 @@ class bcolors:
 
 class Excel_Stats:
     """
-    통합 파일("genoflu_combined_results.xlsx")의 "All Results" 시트에만 누적 저장.
+    Append results only to the "All Results" sheet in the combined workbook.
     """
     def __init__(self, sample_name):
         self.sample_name = sample_name
@@ -41,7 +41,7 @@ class Excel_Stats:
 
     def write_all_results_rows(self, rows):
         """
-        rows: 리스트[dict] 형태. 각 dict가 한 행(한 바이러스)의 결과
+        rows: a list of dictionaries, with one result row per virus.
         """
         df = pd.DataFrame(rows)
         if os.path.exists(combined_excel_filename):
@@ -57,7 +57,7 @@ class Excel_Stats:
 
 class Blast_Fasta(bcolors):
     """
-    입력 FASTA를 지정된 DB에 대해 BLAST 수행, 결과를 파일로 남기고 raw 라인 보관.
+    Run BLAST against the specified database and retain the output file and raw lines.
     """
     def __init__(
         self,
@@ -86,12 +86,12 @@ class Blast_Fasta(bcolors):
                 self._raw_lines.append(line.rstrip('\n'))
 
 
-# 샘플 ID 파싱: '|' 앞의 전체 문자열을 샘플 ID로 사용 (안정화)
+# Parse the virus ID from the text before the first '|'.
 def parse_query_virus_id(header: str) -> str:
     """
-    샘플 ID = '|' 앞의 전체 문자열(양끝 공백 제거)
-    예) '>A/.../2022|PB2' -> 'A/.../2022'
-    '|'가 없으면 첫 공백 전까지 토큰 사용
+    Use the text before the first '|', stripping leading and trailing whitespace.
+    Example: '>A/.../2022|PB2' -> 'A/.../2022'
+    If '|' is absent, use the first whitespace-delimited token.
     """
     h = header.lstrip('>').strip()
     if '|' in h:
@@ -101,9 +101,9 @@ def parse_query_virus_id(header: str) -> str:
 
 class GenoFLU():
     """
-    다중 샘플 FASTA 지원:
-    - 쿼리 헤더에서 virus_id를 추출하여 바이러스 단위로 그룹핑
-    - 각 바이러스에 대해 8개 분절이 ≥97%로 일치하면 genotype 부여
+    Support multi-virus FASTA input:
+    - Extract virus IDs from query headers and group hits by virus.
+    - Assign a genotype when all eight accepted segments (>=97% identity) match the key.
     """
 
     def __init__(self, FASTA=None, FASTA_dir=None, cross_reference=None, sample_name=None, debug=False):
@@ -111,7 +111,7 @@ class GenoFLU():
         self.FASTA_abs_path = FASTA
         FASTA_name = os.path.basename(self.FASTA_abs_path)
 
-        # 헤더 개수(= 파일 내 시퀀스 수)
+        # Count FASTA headers (the number of input sequences).
         with open(self.FASTA_abs_path, 'r') as f:
             fastas_in_file = sum(1 for line in f if line.startswith('>'))
         self.fastas_in_file = fastas_in_file
@@ -119,7 +119,7 @@ class GenoFLU():
         if sample_name:
             sample_name = sample_name
         else:
-            # 기본 sample_name은 파일명에서 첫 '_' 또는 '.' 앞부분
+            # Default to the filename prefix before the first '_' or '.'.
             sample_name = re.sub('[_.].*', '', FASTA_name)
         self.sample_name = sample_name
 
@@ -154,17 +154,17 @@ class GenoFLU():
 
     def blast_hpai_genomes(self,):
         """
-        - 내부 DB(hpai_geno_db) 생성
-        - 입력 FASTA BLAST
-        - 결과를 virus_id별로 {gene: blast_result}로 그룹핑
-        - genotype cross-reference 로드 및 판정
+        - Build the local reference database (hpai_geno_db).
+        - Run BLAST on the input FASTA.
+        - Group hits as {gene: blast_result} for each virus ID.
+        - Load the genotype key and assign genotypes.
         """
-        # DB 생성
+        # Build the BLAST database.
         os.system(
             f'cat {self.FASTA_dir}/*.fasta | makeblastdb -dbtype nucl -out hpai_geno_db -title hpai_geno_db > /dev/null 2>&1'
         )
 
-        # BLAST 실행 (최상위 히트 1개)
+        # Run BLAST with one subject alignment requested; multiple HSPs may be returned.
         blast_hpai_genotyping = Blast_Fasta(
             FASTA=self.FASTA_abs_path,
             format="6 qseqid qseq length nident pident mismatch evalue bitscore sacc stitle",
@@ -175,7 +175,7 @@ class GenoFLU():
 
         blast_genotyping_by_virus = defaultdict(dict)
 
-        # stitle = Genotype|Sample|Gene 형식이 필요
+        # Require reference titles in segment_group|reference_id|gene format.
         for line in blast_hpai_genotyping._raw_lines:
             cols = line.split('\t')
             if len(cols) < 10:
@@ -183,13 +183,13 @@ class GenoFLU():
 
             qseqid, qseq, length, nident, pident, mismatch, evalue, bitscore, sacc, stitle = cols[:10]
 
-            # stitle에서 gene 추출
+            # Extract the gene from the reference title.
             parts = re.split(r'[|]', stitle)
             if len(parts) < 3:
-                raise SystemExit(f"❌ DB FASTA header 형식 오류 (예상: Genotype|Sample|Gene) → {stitle}")
+                raise SystemExit(f"Invalid reference FASTA header (expected segment_group|reference_id|gene): {stitle}")
             gene = parts[2]
 
-            # 쿼리 헤더에서 virus_id 추출
+            # Extract the virus ID from the query header.
             virus_id = parse_query_virus_id(qseqid)
 
             each_blast = {
@@ -219,7 +219,7 @@ class GenoFLU():
                 if (cur_bs > best_bs) or (cur_bs == best_bs and (cur_len > best_len or (cur_len == best_len and cur_p > best_p))):
                     blast_genotyping_by_virus[virus_id][gene] = each_blast
 
-        # ===== 디버그 출력 =====
+        # Report detected virus groups and segment counts.
         self.blast_genotyping_by_virus = dict(blast_genotyping_by_virus)
         print("\n[DEBUG] Detected virus_id groups and segment counts:")
         for vid, gm in sorted(self.blast_genotyping_by_virus.items()):
@@ -230,7 +230,7 @@ class GenoFLU():
             print(f"  - {vid}: {len(gm)} segments, genes={genes_sorted}")
         print()
 
-        # 임시 파일 정리(디버그가 아니면 BLAST 결과 디렉토리 제거)
+        # Collect temporary BLAST files; remove them unless debug mode is enabled.
         blast_dir = f'{self.sample_name}_blast_hpia_genotyping_dir'
         os.makedirs(blast_dir, exist_ok=True)
         files_grab = []
@@ -244,17 +244,17 @@ class GenoFLU():
         if not self.debug:
             shutil.rmtree(blast_dir, ignore_errors=True)
 
-        # ===== genotype cross-reference 로드 (중복 Genotype 안전) =====
+        # Load the genotype key using unique internal keys for duplicate names.
         df = pd.read_excel(self.cross_reference)
 
         # dictionary_of_genotypes: internal_key -> 8seg dict
         dictionary_of_genotypes = {}
-        # genotype_display_name: internal_key -> original genotype string (출력용)
+        # genotype_display_name: internal_key -> original genotype name for output
         genotype_display_name = {}
 
         for idx, row in df.iterrows():
             gname = str(row['Genotype']).strip()
-            internal_key = f"{gname}__{idx+1:04d}"  # 예: G1__0001, G1__0002
+            internal_key = f"{gname}__{idx+1:04d}"  # Examples: G1__0001, G1__0002
 
             dictionary_of_genotypes[internal_key] = {
                 'PB2': row['PB2'], 'PB1': row['PB1'], 'PA': row['PA'],
@@ -265,7 +265,7 @@ class GenoFLU():
 
         self.genotype_display_name = genotype_display_name
 
-        # ===== 바이러스(샘플)별 genotype 매칭 =====
+        # Match the accepted segment combination for each virus.
         self.results_per_virus = {}
         self.genotype_list_used_per_virus = {}
 
@@ -277,7 +277,7 @@ class GenoFLU():
                     genotype, sample, gene_from_title = re.split('[|]', value["stitle"])
                 except ValueError:
                     sys.exit(f'SEE TYPO in Database Input File with Header: {value["stitle"]}')
-                # 97% 이상만 채택
+                # Accept only alignments with at least 97% identity.
                 try:
                     pid = float(value["pident"])
                 except Exception:
@@ -292,7 +292,7 @@ class GenoFLU():
             for gkey, gsegments in dictionary_of_genotypes.items():
                 if sample_dict == gsegments:
                     matching_genotype = True
-                    # ✅ 내부키(gkey)가 아니라 원래 genotype 이름으로 출력
+                    # Report the original genotype name rather than the internal key.
                     result = {
                         'matching_genotype': True,
                         'genotype': self.genotype_display_name.get(gkey, gkey),
@@ -315,7 +315,7 @@ class GenoFLU():
 
     def excel_rows(self):
         """
-        통합 파일에 기록할 rows(dict 리스트) 생성
+        Build a list of result dictionaries for the combined workbook.
         """
         rows = []
         for virus_id, result in self.results_per_virus.items():
@@ -323,7 +323,7 @@ class GenoFLU():
             full_sample_title_list = []
             pident_list = []
             mismatch_list = []
-            coverage_list = []  # FASTA 기반이라 coverage 없음
+            coverage_list = []  # Read-depth coverage is unavailable from FASTA input.
 
             for g, v in gene_map.items():
                 genotype, sample, gene_from_title = re.split('[|]', v["stitle"])
@@ -405,7 +405,7 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
         print(f'\t{key}:  {value}')
     print("\n")
 
-    # 절대 경로 처리
+    # Resolve input paths.
     FASTA_abs_path = os.path.abspath(args.FASTA)
     try:
         FASTA_dir = os.path.abspath(args.FASTA_dir) if args.FASTA_dir else None
@@ -416,7 +416,7 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
     except TypeError:
         cross_reference = args.cross_reference
 
-    # GenoFLU 실행
+    # Run GenoFLU-Asia.
     genoflu = GenoFLU(
         FASTA=FASTA_abs_path,
         FASTA_dir=FASTA_dir,
@@ -432,17 +432,17 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
 
     genoflu.blast_hpai_genomes()
 
-    # 통합 파일에만 기록
+    # Write results only to the combined workbook.
     excel_stats = Excel_Stats(genoflu.sample_name)
     rows = genoflu.excel_rows()
     excel_stats.write_all_results_rows(rows)
 
-    # 콘솔 출력
+    # Print genotype assignments.
     for virus_id, result in genoflu.results_per_virus.items():
         used = ', '.join(genoflu.genotype_list_used_per_virus.get(virus_id, []))
         print(f'\n{genoflu.sample_name}__{virus_id} Genotype --> {result["genotype"]}: {used}\n')
 
-    # 임시 파일 정리
+    # Clean up temporary files.
     temp_dir = f'{FASTA_abs_path}.temp'
     os.makedirs(temp_dir, exist_ok=True)
     files_grab = []
@@ -458,4 +458,4 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
         shutil.rmtree(temp_dir, ignore_errors=True)
 
 # Created 2023 by Tod Stuber
-# Combined-only, multi-sample & debug extension 2025 by ChatGPT
+# GenoFLU-Asia adaptation: multi-virus input and combined workbook output.
