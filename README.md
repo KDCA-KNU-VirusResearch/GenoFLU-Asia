@@ -22,6 +22,10 @@ Major and minor designations reflect the number of viruses representing each gen
 - **Numerical suffixes:** indicate emergence order or reassortment pattern, as defined in the study nomenclature.
 - **Assignment:** major and minor names are recorded in the genotype key.
 
+![Major and minor genotype nomenclature](docs/docs/genotype_nomenclature.png)
+
+**Genotype nomenclature.** Naming scheme for major and minor genotypes.
+
 ## Installation
 
 GenoFLU-Asia can be used in a Conda environment on Linux or Ubuntu on WSL. Install Conda through Miniforge or Miniconda.
