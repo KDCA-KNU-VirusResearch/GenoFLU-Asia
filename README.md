@@ -151,24 +151,19 @@ All segments of a virus must share the same ID before the first `|`.
 - Include all eight segments: **PB2, PB1, PA, HA, NP, NA, MP, and NS**.
 - Follow each header with its corresponding nucleotide sequence.
 
-FASTA format example:
+### Input FASTA example
 
 ```text
 >23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|1
-ATGGAGAGAATAAAAGAATTAAGAGATTTG...
+ATGGAGAGAATAAAAGAATTAAGA...
 >23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|2
-ATGGATGTCAATCCGACTTTACTT
+ATGGATGTCAATCCGACTTTACTT...
 >23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|3
-ATGATTGTCGAGCTTGCGGAAAAGGC....
+ATGATTGTCGAGCTTGCGGAAAA...
 ```
 
 Abbreviated example showing three sequence records from one virus. Each header starts with `>` on its own line, followed by the nucleotide sequence on the next line. The sequences above are excerpts; use the actual nucleotide sequences without ellipses (`...`) in the input file.
 
-### Input FASTA example
-
-![Input FASTA viewed in a sequence editor](docs/docs/input_fasta_example.png)
-
-*Example input FASTA displayed in a sequence editor. This is a viewing example, not a required software or alignment step; prepare headers as described above.*
 
 ### Run
 

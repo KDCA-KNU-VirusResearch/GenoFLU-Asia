@@ -23,15 +23,15 @@ pwd</code></pre>
 <h3 id="prepare-fasta-headers">Prepare FASTA headers</h3>
 <p>All segments of a virus must share the same ID before the first <code>|</code>.</p>
 <ul><li>Use IDs without spaces and a distinct ID for each virus.</li><li>Include all eight segments: <strong>PB2, PB1, PA, HA, NP, NA, MP, and NS</strong>.</li><li>Follow each header with its corresponding nucleotide sequence.</li></ul>
-<p>FASTA format example:</p>
+<h3>Input FASTA example</h3>
 <pre><code>&gt;23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|1
-ATGGAGAGAATAAAAGAATTAAGAGATTTG...
+ATGGAGAGAATAAAAGAATTAAGA...
 &gt;23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|2
-ATGGATGTCAATCCGACTTTACTT
+ATGGATGTCAATCCGACTTTACTT...
 &gt;23AS-b.1.5.2_A/duck/Vietnam/Raho7-23S-4852/2023|EPI_ISL_19863928|3
-ATGATTGTCGAGCTTGCGGAAAAGGC....</code></pre>
+ATGATTGTCGAGCTTGCGGAAAA...</code></pre>
 <p>Abbreviated example showing three sequence records from one virus. Each header starts with <code>&gt;</code> on its own line, followed by the nucleotide sequence on the next line. The sequences above are excerpts; use the actual nucleotide sequences without ellipses (<code>...</code>) in the input file.</p>
-<h3>Input FASTA example</h3><figure style="margin:24px 0"><a href="docs/input_fasta_example.png?v=2" target="_blank" rel="noopener"><img src="docs/input_fasta_example.png?v=2" alt="Example input FASTA displayed in a sequence editor" loading="lazy"></a><figcaption class="smallnote">Example input FASTA displayed in a sequence editor. This is a viewing example, not a required software or alignment step; prepare headers as described above. Click to enlarge.</figcaption></figure><h3 id="run">Run</h3>
+<h3 id="run">Run</h3>
 <div class="stephead code-actions"><button class="copy" data-copy="command-2">Copy</button></div><pre><code id="command-2">conda activate genoflu-asia
 cd ~/genoflu_asia_analysis
 genoflu-asia --input ./input --output ./output</code></pre>
