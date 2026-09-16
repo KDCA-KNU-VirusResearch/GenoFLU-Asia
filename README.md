@@ -21,8 +21,7 @@ Major and minor designations reflect the number of viruses representing each gen
 - **Major:** Three or more viruses; names encode the HA subgroup.
 - **Minor:** Fewer than three viruses; numbered in order of emergence without an HA subgroup label.
 - **Example — AS-a.1:** AS denotes Asia, a denotes the HA subgroup, and 1 identifies the first genotype to emerge within that HA subgroup.
-- **Reassortment numbering:** Subsequent reassortants receive suffixes such as .1 and .2 (for example, AS-a.1.1 and AS-a.1.2). A genotype differing from genotype 1 in five or more of the eight genome segments receives a new main number, such as AS-a.2.
-- **Delayed reporting:** (Viruses reported later may receive later genotype numbers even if their collection dates are earlier; numbering therefore does not always follow collection-date order.)
+- **Reassortment numbering:** Subsequent reassortants receive suffixes such as .1 and .2 (for example, AS-a.1.1 and AS-a.1.2). A genotype differing from genotype 1 in five or more of the eight genome segments receives a new main number, such as AS-a.2. (Viruses reported later may receive later genotype numbers even if their collection dates are earlier; numbering therefore does not always follow collection-date order.)
 - **Minor-to-major updates:** A minor genotype is reclassified as major when additional detections, including those in subsequent years, bring the cumulative number of viruses to three or more. These changes are made during reference database updates, not automatically from the number of samples in an individual analysis.
 - **Genotype definitions:** The file `genotype_key_asia.xlsx` records genotype names and their corresponding eight-segment combinations.
 
