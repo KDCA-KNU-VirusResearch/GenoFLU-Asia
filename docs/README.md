@@ -227,6 +227,7 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 
 A genotype is assigned when all eight accepted segment groups match an entry in `genotype_key_asia.xlsx`.
 
+- **Alignment selection:** within each virus and gene, select the highest BLAST bitscore; break ties by alignment length, then percent identity. Apply the 97% identity threshold to the selected alignment.
 - **Identity threshold:** BLAST nucleotide identity **≥97%** for each accepted segment.
 - **Alignment scope:** the threshold applies to local alignments; no minimum alignment-coverage filter is applied.
 

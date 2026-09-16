@@ -205,7 +205,7 @@ class GenoFLU():
                 'qseqid': qseqid,
             }
 
-            # 같은 gene 키에 대해 우선순위 비교: pident > bitscore > length
+            # Rank hits within each virus/gene by bitscore, then alignment length, then identity.
             best = blast_genotyping_by_virus[virus_id].get(gene)
             cur_p = float(each_blast['pident'])
             cur_bs = float(each_blast['bitscore'])
@@ -216,7 +216,7 @@ class GenoFLU():
                 best_p = float(best['pident'])
                 best_bs = float(best['bitscore'])
                 best_len = float(best['blast_length'])
-                if (cur_p > best_p) or (cur_p == best_p and (cur_bs > best_bs or (cur_bs == best_bs and cur_len > best_len))):
+                if (cur_bs > best_bs) or (cur_bs == best_bs and (cur_len > best_len or (cur_len == best_len and cur_p > best_p))):
                     blast_genotyping_by_virus[virus_id][gene] = each_blast
 
         # ===== 디버그 출력 =====
