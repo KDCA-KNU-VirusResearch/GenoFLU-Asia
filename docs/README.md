@@ -6,11 +6,11 @@ Reference-based genotype assignment for Asian H5 avian influenza viruses in clad
 
 ## Overview
 
-GenoFLU-Asia was developed from [GenoFLU](https://github.com/USDA-VS/GenoFLU) to provide an integrated framework for classifying highly pathogenic avian influenza (HPAI) H5 viruses of the goose/Guangdong lineage, clade 2.3.4.4b, detected in Asian countries.
+GenoFLU-Asia is a genotyping tool developed to support harmonized classification of clade 2.3.4.4b H5 avian influenza viruses circulating in Asia. These viruses exhibit diverse genomic constellations that are not fully resolved by existing regional and global genotyping systems. Differences in genotype nomenclature across countries and institutions further complicate comparisons, highlighting the need for a shared Asian classification framework.
 
-**This project was developed as part of a research collaboration with the Korea Disease Control and Prevention Agency (KDCA), Republic of Korea.**
+Developed in collaboration with the **Korea Disease Control and Prevention Agency (KDCA), Republic of Korea**, GenoFLU-Asia builds on **[USDA-VS/GenoFLU](https://github.com/USDA-VS/GenoFLU)**. Phylogenetic analyses of all eight genome segments from Asian viruses collected during **2020–2026**, with HA genes belonging to **clade 2.3.4.4b group G2**, informed a harmonized genotype nomenclature, an Asia-specific reference sequence database, and a corresponding genotype key.
 
-The study focuses on viruses isolated in Asia during **2020–2026** whose **HA genes belong to group G2 of clade 2.3.4.4b**, including reassortants with low pathogenic avian influenza (LPAI) viruses. GenoFLU-Asia considers the constellation of **all eight genome segments—PB2, PB1, PA, HA, NP, NA, M, and NS—to assign genotypes** using an Asia-focused reference sequence set and genotype key. A batch-processing workflow compiles the assignments into a combined Excel workbook.
+GenoFLU-Asia uses BLAST-based sequence comparisons to assign segment groups and identify genotypes from their eight-segment combinations. It supports multiple viruses in FASTA input and compiles assignments into a single Excel workbook, providing a consistent approach to genotype assignment and genomic surveillance across Asia.
 
 ## Genotype classification and nomenclature
 
