@@ -221,14 +221,15 @@ class GenoFLU():
 
         # Report detected virus groups and segment counts.
         self.blast_genotyping_by_virus = dict(blast_genotyping_by_virus)
-        print("\n[DEBUG] Detected virus_id groups and segment counts:")
-        for vid, gm in sorted(self.blast_genotyping_by_virus.items()):
-            try:
-                genes_sorted = sorted(gm.keys())
-            except Exception:
-                genes_sorted = list(gm.keys())
-            print(f"  - {vid}: {len(gm)} segments, genes={genes_sorted}")
-        print()
+        if self.debug:
+            print("\n[DEBUG] Detected virus_id groups and segment counts:")
+            for vid, gm in sorted(self.blast_genotyping_by_virus.items()):
+                try:
+                    genes_sorted = sorted(gm.keys())
+                except Exception:
+                    genes_sorted = list(gm.keys())
+                print(f"  - {vid}: {len(gm)} segments, genes={genes_sorted}")
+            print()
 
         # Collect temporary BLAST files; remove them unless debug mode is enabled.
         blast_dir = f'{self.sample_name}_blast_hpia_genotyping_dir'
@@ -383,7 +384,7 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
         Summary:
             Combined-only mode: writes ONLY "genoflu_combined_results.xlsx" (no per-file xlsx/tsv).
             Multi-sample FASTA is supported; rows are appended per virus in "All Results" sheet.
-            DEBUG prints detected virus_id groups and their segment counts/genes.
+            With -d/--debug, print virus groups and their segment counts/genes and retain temporary files.
             Duplicate Genotype names in genotype_key_asia.xlsx are supported safely (internal unique keys).
         '''), epilog='''---------------------------------------------------------'''
     )
@@ -395,7 +396,7 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
                         help='Genotype key Excel file. Default: dependencies/genotype_key_asia.xlsx beside this script. Columns: Genotype + 8 segments.')
     parser.add_argument('-n', '--sample_name', action='store', dest='sample_name',
                         required=False, help='Force output files to this sample name')
-    parser.add_argument('-d', '--debug', action='store_true', dest='debug', default=False, help='keep temp files')
+    parser.add_argument('-d', '--debug', action='store_true', dest='debug', default=False, help='print debug details and keep temporary files')
     parser.add_argument('-v', '--version', action='version',
                         version=f'{os.path.basename(__file__)}: version {__version__}')
     args = parser.parse_args()
