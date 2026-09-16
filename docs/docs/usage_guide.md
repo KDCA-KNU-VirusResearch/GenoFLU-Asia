@@ -1,6 +1,6 @@
 ## Installation
 
-These instructions describe **GenoFLU-Asia** and its local scripts and reference files. They follow the installation–usage–interpretation structure of the [original GenoFLU documentation](https://github.com/USDA-VS/GenoFLU), with commands checked against this adaptation. Installing the upstream `genoflu` Conda package alone does not install the Asia-specific scripts, references, or genotype key.
+These instructions describe **GenoFLU-Asia** and its local scripts and reference files. They follow the installation–usage–interpretation structure of the [original GenoFLU documentation](https://github.com/USDA-VS/GenoFLU), with commands checked against this adaptation. Installing the upstream `genoflu` Conda package alone does not install the Asia-specific scripts, references, or genotype definitions.
 
 ### 1. Prepare a Linux environment
 
@@ -187,7 +187,7 @@ The 97% threshold applies to the reported local alignment, not necessarily the e
 | `date` | Analysis timestamp; this is not the collection date. |
 | `File Name` | Source FASTA filename. |
 | `Genotype` | A name from the current key, such as `AS-d.1` or `minor34`, or an unassigned-result message. |
-| `Genotype List Used, >=97%` | Accepted `segment:group` assignments used to match the genotype key. |
+| `Genotype List Used, >=97%` | Accepted `segment:group` assignments used to match the genotype definitions. |
 | `Genotype Sample Title List` | Selected reference hits, formatted as `segment:group:reference_sample`. This may include hits below 97%. |
 | `Genotype Percent Match List` | BLAST percent identities, in the same order as the reference-title list. |
 | `Genotype Mismatch List` | Numbers of mismatching bases within the corresponding BLAST alignments, in the same order as the reference-title list. These are counts, not genotype numbers or percentages. |
@@ -201,8 +201,8 @@ For example, a mismatch value of `40` means 40 mismatching bases in that selecte
 
 | Result | Meaning | What to check next |
 | --- | --- | --- |
-| A genotype name, e.g. `AS-d.1` | Eight accepted segment groups match a genotype-key entry. | Review sequence quality and individual reference matches; the label is not a confidence score or a measure of disease severity. |
-| A `minor` name, e.g. `minor34` | A defined genotype-key entry whose name contains `minor`. | Treat it as an assigned genotype; `minor` does not mean a failed analysis or low-confidence sequence. |
+| A genotype name, e.g. `AS-d.1` | Eight accepted segment groups match a genotype definition. | Review sequence quality and individual reference matches; the label is not a confidence score or a measure of disease severity. |
+| A `minor` name, e.g. `minor34` | A defined genotype definition whose name contains `minor`. | Treat it as an assigned genotype; `minor` does not mean a failed analysis or low-confidence sequence. |
 | `Not assigned: No Matching Genotypes` | Eight segments pass the identity threshold, but their combination is absent from the key. | Check the segment combination, sequence quality, and current key. This result alone does not establish a novel genotype. |
 | `Not assigned: Only ... segments >=97% ...` | Fewer than eight segment assignments pass the threshold. The threshold is **≥97%**. | Identify missing or below-threshold segments and verify the FASTA IDs and completeness. |
 | An input virus is absent from the workbook | No reportable BLAST-hit group may have been generated for it. | Compare input IDs with reported IDs; check the input format, reference files, and BLAST availability. |
@@ -217,7 +217,7 @@ Genotype labels describe the study's reference-based classification. They do not
 | `blastn` or `makeblastdb` is unavailable | Activate the environment containing BLAST+; verify both commands with `-version`. |
 | The script ends without processing files | Check the `--input` folder, confirm it contains files directly inside it, and use lowercase `.fasta` extensions. |
 | `genoflu-asia: command not found` | Activate `genoflu-asia` and run `bash install_command.sh` from the project folder if the command is not yet registered. |
-| Reference FASTA or genotype key cannot be found | Restore the documented folder structure. For direct Python execution, provide `-i` and `-c`. |
+| Reference FASTA or genotype definitions cannot be found | Restore the documented folder structure. For direct Python execution, provide `-i` and `-c`. |
 | All or many samples are unassigned | Check BLAST availability, reference/key consistency, FASTA header grouping, and the per-segment identities. Do not infer a new genotype from a failed run. |
 | Results contain repeated rows or earlier samples | Check for a workbook left in the project folder from an interrupted or direct run. Preserve it separately before rerunning. |
 | `Permission denied` when using `./run_genoflu.sh` | Run `chmod +x run_genoflu.sh` and retry `./run_genoflu.sh`; also ensure that the project and output folders are writable. |

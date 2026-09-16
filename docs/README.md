@@ -12,17 +12,21 @@ GenoFLU-Asia was developed based on the USDA-VS/GenoFLU program through a collab
 
 GenoFLU-Asia uses BLAST-based sequence comparisons to assign each genomic segment to a segment group and determines the viral genotype based on the resulting eight-segment constellation. The tool supports batch analysis of multiple viruses provided in FASTA format and compiles all assignment results into a single Excel workbook. It thereby provides a consistent and efficient approach to genotype assignment and genomic surveillance of clade 2.3.4.4b H5 viruses across Asia.
 
+Current version: v1.0. The reference sequences and genotype definitions require regular updates as additional viruses are reported. Future updates will document changes to genotype names and minor-to-major reclassifications. See [Update history](https://github.com/KDCA-KNU-VirusResearch/GenoFLU-Asia/blob/main/CHANGELOG.md).
+
 ## Genotype classification and nomenclature
 
 Major and minor designations reflect the number of viruses representing each genotype in the study dataset.
 
-- **Major:** three or more viruses; names encode the HA subgroup.
-- **Minor:** fewer than three viruses; numbered in order of emergence without an HA subgroup label.
-- **Example — `AS-a.1`:** `AS` = Asia; `a` = HA subgroup; `1` = genotype lineage number.
-- **Numerical suffixes:** indicate emergence order or reassortment pattern, as defined in the study nomenclature.
-- **Assignment:** major and minor names are recorded in the genotype key.
+- **Major:** Three or more viruses; names encode the HA subgroup.
+- **Minor:** Fewer than three viruses; numbered in order of emergence without an HA subgroup label.
+- **Example — AS-a.1:** AS denotes Asia, a denotes the HA subgroup, and 1 identifies the first genotype to emerge within that HA subgroup.
+- **Reassortment numbering:** Subsequent reassortants receive suffixes such as .1 and .2 (for example, AS-a.1.1 and AS-a.1.2). A genotype differing from genotype 1 in five or more of the eight genome segments receives a new main number, such as AS-a.2.
+- **Delayed reporting:** (Viruses reported later may receive later genotype numbers even if their collection dates are earlier; numbering therefore does not always follow collection-date order.)
+- **Minor-to-major updates:** A minor genotype is reclassified as major when additional detections, including those in subsequent years, bring the cumulative number of viruses to three or more. These changes are made during reference database updates, not automatically from the number of samples in an individual analysis.
+- **Genotype definitions:** The file `genotype_key_asia.xlsx` records genotype names and their corresponding eight-segment combinations.
 
-![Major and minor genotype nomenclature](docs/genotype_nomenclature.png)
+![Major and minor genotype nomenclature](docs/genotype_nomenclature.png?v=2)
 
 **Genotype nomenclature.** Naming scheme for major and minor genotypes.
 
@@ -40,7 +44,7 @@ The project files, Conda environment, and analysis files serve different purpose
 
 | Item | Purpose | Example |
 | --- | --- | --- |
-| Project folder | Stores the scripts, reference sequences, and genotype key | `~/projects/GenoFLU-Asia` |
+| Project folder | Stores the scripts, reference sequences, and genotype definitions | `~/projects/GenoFLU-Asia` |
 | Conda environment | Provides Python, BLAST, and required packages | Environment named `genoflu-asia` |
 | Analysis folder | Stores input FASTA files and output workbooks | `~/genoflu_asia_analysis` |
 
@@ -51,7 +55,7 @@ The project files, Conda environment, and analysis files serve different purpose
 
 ### 1. Clone the repository — once
 
-Cloning downloads the complete project, including the scripts, reference sequences, and genotype key. First check that Git is available in your Linux or Ubuntu terminal:
+Cloning downloads the complete project, including the scripts, reference sequences, and genotype definitions. First check that Git is available in your Linux or Ubuntu terminal:
 
 ```bash
 git --version
@@ -217,7 +221,7 @@ genoflu-asia --input ./input --output ./output
 
 ## Test the installation
 
-The `test/` folder contains `example_10_genotypes.fasta` (10 viruses, eight segments each) and `expected_results.tsv`. The example covers five distinct major and five distinct minor genotypes. Expected assignments were verified with the bundled Asia references and genotype key; they are software test results, not an independent biological validation.
+The `test/` folder contains `example_10_genotypes.fasta` (10 viruses, eight segments each) and `expected_results.tsv`. The example covers five distinct major and five distinct minor genotypes. Expected assignments were verified with the bundled Asia references and genotype definitions; they are software test results, not an independent biological validation.
 
 Run the example using your activated environment:
 
@@ -230,7 +234,7 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 - **Expected output:** 10 rows in the **All Results** sheet. Compare each virus ID and its `Genotype` with `test/expected_results.tsv`; the output `sample` field adds a full input filename stem (without `.fasta`) followed by `__` before the virus ID.
 - **Major genotypes:** `AS-a.1(N6)`, `AS-b.1`, `AS-c.1`, `AS-d.1`, `NA.1(B3.2)`.
 - **Minor genotypes:** `minor1(N6)`, `minor3(N6)`, `minor4`, `minor5(N6)`, `minor6(N6)`.
-- **Input provenance:** the selected records retain their original FASTA headers, accession identifiers, and nucleotide sequences from the supplied dataset. Major/minor labels follow the study genotype key, not the number of examples in this test file.
+- **Input provenance:** the selected records retain their original FASTA headers, accession identifiers, and nucleotide sequences from the supplied dataset. Major/minor labels follow the study genotype definitions, not the number of examples in this test file.
 
 ## Interpreting results
 
@@ -277,7 +281,7 @@ A genotype is assigned when all eight accepted segment groups match an entry in 
 
 ## Reference Database Structure
 
-GenoFLU-Asia follows the reference-sequence and genotype-key approach described in [GenoFLU](https://github.com/USDA-VS/GenoFLU#-reference-database-structure).
+GenoFLU-Asia follows the reference-sequence and genotype-definition approach described in [GenoFLU](https://github.com/USDA-VS/GenoFLU#-reference-database-structure).
 
 ```text
 dependencies/
@@ -303,7 +307,7 @@ Each FASTA file contains reference nucleotide sequences for one segment.
 - `PB2_group1` identifies the segment group; `reference_001` identifies the reference; `PB2` identifies the gene.
 - Reference headers differ from the input-virus headers described [above](#prepare-fasta-headers).
 
-### Genotype key
+### Genotype definitions (genotype_key_asia.xlsx)
 
 `genotype_key_asia.xlsx` maps genotype names to their eight-segment combinations.
 
@@ -316,7 +320,7 @@ Each FASTA file contains reference nucleotide sequences for one segment.
 
 Developed in collaboration with the **Korea Disease Control and Prevention Agency (KDCA), Republic of Korea**, and based on [USDA-VS/GenoFLU](https://github.com/USDA-VS/GenoFLU).
 
-- **Software:** based on USDA-VS/GenoFLU; the upstream GPL-3.0 license is included in [LICENSE](LICENSE). This adaptation adds Asia-specific reference sequences and genotype keys, batch processing, and combined Excel output.
+- **Software:** based on USDA-VS/GenoFLU; the upstream GPL-3.0 license is included in [LICENSE](LICENSE). This adaptation adds Asia-specific reference sequences and genotype definitions, batch processing, and combined Excel output.
 - **Sequence data:** follow source-specific terms and acknowledgments, including GISAID where applicable.
 - **Citation:** cite the GenoFLU-Asia repository and the version or commit used; the study citation will be added when available. Software citation metadata is provided in `CITATION.cff`.
 - **Upstream publication:** Youk S, et al. (2023). H5N1 highly pathogenic avian influenza clade 2.3.4.4b in wild and domestic birds: Introductions into the United States and reassortments, December 2021–April 2022. *Virology* 587:109860. [doi:10.1016/j.virol.2023.109860](https://doi.org/10.1016/j.virol.2023.109860).

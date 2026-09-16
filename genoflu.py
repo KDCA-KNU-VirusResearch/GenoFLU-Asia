@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Based on GenoFLU by Tod Stuber; see LICENSE and the upstream repository.
 
-__version__ = "1.0.0"
+__version__ = "1.0"
 
 import os
 import sys
@@ -443,7 +443,7 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
             genoflu.py -f sample.fasta # -i and -c default to the bundled Asia references
         -f is the input FASTA file which the genotype will be determined
         -i is the directory containing FASTAs to BLAST against. Headers must follow specific format. "Genotype|Sample|Gene"
-        -c is the genotype key. Default: dependencies/genotype_key_asia.xlsx beside this script
+        -c is the genotype definitions workbook (.xlsx). Default: dependencies/genotype_key_asia.xlsx beside this script
         -n is the sample name to force output files to this sample name versus taking the name to be anything before [_.]
 
         Summary:
@@ -459,7 +459,7 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
     parser.add_argument('-i', '--FASTA_dir', action='store', dest='FASTA_dir', default=None,
                         help='Reference FASTA directory. Default: dependencies/asia_fastas beside this script')
     parser.add_argument('-c', '--cross_reference', action='store', dest='cross_reference', default=None,
-                        help='Genotype key Excel file. Default: dependencies/genotype_key_asia.xlsx beside this script. Columns: Genotype + 8 segments.')
+                        help='Genotype definitions Excel file (.xlsx). Default: dependencies/genotype_key_asia.xlsx beside this script. Columns: Genotype + 8 segments.')
     parser.add_argument('-n', '--sample_name', action='store', dest='sample_name',
                         required=False, help='Force output files to this sample name')
     parser.add_argument('-d', '--debug', action='store_true', dest='debug', default=False, help='print debug details and keep temporary files')

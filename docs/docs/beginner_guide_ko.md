@@ -54,7 +54,7 @@ ls
 ```
 
 - `mkdir -p`: 프로젝트를 둘 상위 폴더를 만듭니다.
-- `git clone`: 코드·참조 파일·genotype key를 함께 내려받습니다.
+- `git clone`: 코드·참조 파일·genotype_key_asia.xlsx를 함께 내려받습니다.
 - `cd`: 프로그램 폴더로 이동합니다.
 - `ls`: 파일 목록을 봅니다. genoflu.py, run_genoflu.sh, install_command.sh, dependencies가 있는지 확인합니다.
 
