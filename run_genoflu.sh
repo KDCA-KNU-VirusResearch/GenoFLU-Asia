@@ -4,22 +4,21 @@ set -euo pipefail
 # Defaults retain the original no-argument behavior; flags override these paths.
 FASTA_DIR="$HOME/genoflu_fasta"
 OUTPUT_DIR="$HOME/genoflu_output"
-PIDENT_THRESHOLD="97"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 usage() {
   cat <<'HELP'
 GenoFLU-Asia
-Usage: genoflu-asia [--input DIR] [--output DIR] [-p PERCENT]
-       ./run_genoflu.sh [--input DIR] [--output DIR] [-p PERCENT]
+Usage: genoflu-asia [--input DIR] [--output DIR]
+       ./run_genoflu.sh [--input DIR] [--output DIR]
 
   -i, --input DIR   Folder containing lowercase .fasta files
                    Default: $HOME/genoflu_fasta
   -o, --output DIR  Destination for genoflu_combined_results.xlsx
                    Default: $HOME/genoflu_output
   -h, --help        Show help without running an analysis
-  -p, --pident_threshold PERCENT
-                   Minimum nucleotide identity, 0-100 (default: 97)
+
+Nucleotide identity threshold: fixed at 97%.
 
 Relative paths are resolved from the directory where the command is invoked.
 Example: genoflu-asia --input ./input --output ./output
@@ -29,10 +28,6 @@ fail() { printf 'Error: %s\n' "$*" >&2; exit 2; }
 while (( $# )); do
   case "$1" in
     -h|--help) usage; exit 0 ;;
-    -p|--pident_threshold)
-      (( $# >= 2 )) && [[ -n "$2" ]] || fail "Missing percentage after $1"
-      PIDENT_THRESHOLD="$2"; shift 2 ;;
-    --pident_threshold=*) PIDENT_THRESHOLD="${1#*=}"; shift ;;
     -i|--input|-o|--output)
       (( $# >= 2 )) && [[ -n "$2" && "$2" != -* ]] || fail "Missing directory after $1"
       if [[ "$1" == -i || "$1" == --input ]]; then FASTA_DIR="$2"; else OUTPUT_DIR="$2"; fi
@@ -63,16 +58,13 @@ done
 for executable in python blastn makeblastdb; do
   command -v "$executable" >/dev/null || fail "$executable is unavailable; activate the genoflu-asia Conda environment"
 done
-# Validate before creating output files; Python also validates direct CLI calls.
-PIDENT_THRESHOLD="$(python -c 'import sys; value=float(sys.argv[1]); sys.exit("Identity threshold must be from 0 to 100") if not 0 <= value <= 100 else print(format(value, "g"))' "$PIDENT_THRESHOLD")" || fail 'Identity threshold must be a number from 0 to 100'
 mkdir -p -- "$OUTPUT_DIR"
 cd -- "$SCRIPT_DIR"
 printf 'Input: %s\nOutput: %s\n' "$FASTA_DIR" "$OUTPUT_DIR"
-printf 'Minimum nucleotide identity: %s%%\n' "$PIDENT_THRESHOLD"
 for FILE in "${FILES[@]}"; do
   FILENAME="$(basename -- "$FILE" .fasta)"
   printf 'Processing %s...\n' "$FILENAME"
-  python "$GENOFLU_SCRIPT" -f "$FILE" -i "$DEPENDENCIES_FASTAS" -c "$GENOTYPE_KEY" -p "$PIDENT_THRESHOLD"
+  python "$GENOFLU_SCRIPT" -f "$FILE" -i "$DEPENDENCIES_FASTAS" -c "$GENOTYPE_KEY"
   printf '%s completed.\n' "$FILENAME"
 done
 [[ -f genoflu_combined_results.xlsx ]] || fail 'No result workbook was produced; inspect input sequences and BLAST results'
