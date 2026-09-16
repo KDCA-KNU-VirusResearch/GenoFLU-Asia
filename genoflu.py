@@ -19,6 +19,17 @@ from Bio import SeqIO
 combined_excel_filename = "genoflu_combined_results.xlsx"
 
 
+def identity_threshold(value):
+    """Validate a nucleotide identity percentage in the inclusive range 0-100."""
+    try:
+        threshold = float(value)
+    except (TypeError, ValueError):
+        raise argparse.ArgumentTypeError('Identity threshold must be a number from 0 to 100.')
+    if not 0 <= threshold <= 100:
+        raise argparse.ArgumentTypeError('Identity threshold must be a number from 0 to 100.')
+    return threshold
+
+
 class bcolors:
     PURPLE = '\033[95m'
     BLUE = '\033[94m'
@@ -103,11 +114,13 @@ class GenoFLU():
     """
     Support multi-virus FASTA input:
     - Extract virus IDs from query headers and group hits by virus.
-    - Assign a genotype when all eight accepted segments (>=97% identity) match the key.
+    - Assign a genotype when all eight accepted segments match the key.
+      The minimum nucleotide identity defaults to 97%.
     """
 
-    def __init__(self, FASTA=None, FASTA_dir=None, cross_reference=None, sample_name=None, debug=False):
+    def __init__(self, FASTA=None, FASTA_dir=None, cross_reference=None, sample_name=None, debug=False, pident_threshold=97.0):
         self.debug = debug
+        self.pident_threshold = identity_threshold(pident_threshold)
         self.FASTA_abs_path = FASTA
         FASTA_name = os.path.basename(self.FASTA_abs_path)
 
@@ -278,12 +291,12 @@ class GenoFLU():
                     genotype, sample, gene_from_title = re.split('[|]', value["stitle"])
                 except ValueError:
                     sys.exit(f'SEE TYPO in Database Input File with Header: {value["stitle"]}')
-                # Accept only alignments with at least 97% identity.
+                # Apply the configured identity threshold to the selected alignment.
                 try:
                     pid = float(value["pident"])
                 except Exception:
                     pid = 0.0
-                if pid >= 97.0:
+                if pid >= self.pident_threshold:
                     sample_dict[gene] = genotype
                     used_list.append(f'{gene}:{genotype}')
 
@@ -308,7 +321,7 @@ class GenoFLU():
                     result['genotype'] = "Not assigned: No Matching Genotypes"
                 else:
                     result['genotype'] = (
-                        f'Not assigned: Only {segcnt} segments >97% match found of total {total_in_sample} segments in this sample'
+                        f'Not assigned: Only {segcnt} segments >={self.pident_threshold:g}% match found of total {total_in_sample} segments in this sample'
                     )
 
             self.results_per_virus[virus_id] = result
@@ -346,7 +359,7 @@ class GenoFLU():
                 'date': datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
                 'File Name': os.path.basename(self.FASTA_abs_path),
                 'Genotype': result['genotype'],
-                'Genotype List Used, >=97%': ', '.join(self.genotype_list_used_per_virus.get(virus_id, [])),
+                f'Genotype List Used, >={self.pident_threshold:g}%': ', '.join(self.genotype_list_used_per_virus.get(virus_id, [])),
                 'Genotype Sample Title List': ', '.join(full_sample_title_list),
                 'Genotype Percent Match List': ', '.join(pident_list),
                 'Genotype Mismatch List': ', '.join(mismatch_list),
@@ -397,6 +410,8 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
     parser.add_argument('-n', '--sample_name', action='store', dest='sample_name',
                         required=False, help='Force output files to this sample name')
     parser.add_argument('-d', '--debug', action='store_true', dest='debug', default=False, help='print debug details and keep temporary files')
+    parser.add_argument('-p', '--pident_threshold', type=identity_threshold, default=97.0,
+                        help='Minimum BLAST nucleotide identity (0-100; default: 97). Applied after bitscore-based alignment selection.')
     parser.add_argument('-v', '--version', action='version',
                         version=f'{os.path.basename(__file__)}: version {__version__}')
     args = parser.parse_args()
@@ -423,7 +438,8 @@ if __name__ == "__main__":  # execute if directly accessed by the interpreter
         FASTA_dir=FASTA_dir,
         cross_reference=cross_reference,
         sample_name=args.sample_name,
-        debug=args.debug
+        debug=args.debug,
+        pident_threshold=args.pident_threshold
     )
 
     try:

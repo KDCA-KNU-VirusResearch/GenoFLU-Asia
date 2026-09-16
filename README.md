@@ -227,9 +227,25 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 
 A genotype is assigned when all eight accepted segment groups match an entry in `genotype_key_asia.xlsx`.
 
-- **Alignment selection:** within each virus and gene, select the highest BLAST bitscore; break ties by alignment length, then percent identity. Apply the 97% identity threshold to the selected alignment.
-- **Identity threshold:** BLAST nucleotide identity **≥97%** for each accepted segment.
+- **Alignment selection:** within each virus and gene, select the highest BLAST bitscore; break ties by alignment length, then percent identity. Apply the configured identity threshold (default: 97%) to the selected alignment.
+- **Identity threshold:** BLAST nucleotide identity **≥97% by default** for each accepted segment; configurable with `-p/--pident_threshold`.
 - **Alignment scope:** the threshold applies to local alignments; no minimum alignment-coverage filter is applied.
+
+- **Why 97%?** Manual segment-cluster assignment in this study used a 97% pairwise nucleotide identity criterion, with values below 97% treated as evidence of distinct clusters. The default cutoff maintains consistency with that manual classification framework. Pairwise identity used for manual clustering and identity over a BLAST local alignment are not identical measurements; the cutoff is an operational assignment criterion, not a universal cluster boundary.
+- **Threshold comparison:** with bitscore-first selection and the same reference set, 97% retained all 1,820 assignments with eight-segment combinations concordant with uniquely matched manual records. At 98%, 44 of those records became unassigned. These are within-dataset concordance results, not independent estimates of diagnostic accuracy; records may overlap between input files.
+- **Custom threshold:** use `-p` or `--pident_threshold` with a percentage from 0 to 100 (default: 97). This changes acceptance of the selected alignment, not the bitscore ranking or genotype key. The workbook's `Genotype List Used` column includes the chosen cutoff. Changing the threshold can alter assignments.
+
+For an optional 98% comparison (save any previous output first):
+
+```bash
+genoflu-asia --input ./input --output ./output --pident_threshold 98
+```
+
+The equivalent short option is `-p 98`. Direct Python use also supports the option:
+
+```bash
+python ~/projects/GenoFLU-Asia/genoflu.py -f ./input/sample01.fasta -p 98
+```
 
 | Result or column | Meaning |
 | --- | --- |
