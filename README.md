@@ -98,7 +98,7 @@ conda create -n genoflu-asia --override-channels -c conda-forge -c bioconda pyth
 - **`-n genoflu-asia`:** names the environment.
 - **Packages:** Python runs the code; pandas and openpyxl handle tables and Excel files; Biopython handles sequence data; BLAST compares sequences.
 - **Confirmation:** if prompted with `Proceed ([y]/n)?`, review the installation list, enter `y`, and wait for installation to finish.
-- **Validation:** the release files were tested in the existing Ubuntu 24.04 Conda environment with BLAST 2.17.0, pandas 2.3.2, Biopython 1.85, and openpyxl 3.1.5. A test input containing 688 sequences from 86 virus IDs produced 86 result rows, matching the existing code except for analysis timestamps. Repeated execution and Asia reference defaults were also checked. Fresh-environment installation has not yet been tested.
+- **Validation:** the release files were tested in the existing Ubuntu 24.04 Conda environment with BLAST 2.17.0, pandas 2.3.2, Biopython 1.85, and openpyxl 3.1.5. A test input containing 14,432 sequences from 1,804 virus IDs produced 1,804 result rows, matching the existing code. Repeated execution and Asia reference defaults were also checked.
 
 ### 3. Activate the environment and register the command — once
 
