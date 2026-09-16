@@ -6,7 +6,7 @@ Reference-based genotype assignment for Asian H5 avian influenza viruses in clad
 
 ## Overview
 
-GenoFLU-Asia is a genotyping tool designed to support the standardized classification of clade 2.3.4.4b H5 avian influenza viruses circulating in Asia. These viruses exhibit highly diverse genomic constellations that differ substantially from those circulating in other regions. Consequently, existing genotyping tools, such as GenoFLU and GenIn, may not adequately classify many Asian viruses. Differences in genotype nomenclature among countries and institutions further complicate comparisons, highlighting the need for a harmonized genotyping framework for Asia.
+GenoFLU-Asia is a genotyping tool designed to support the standardized classification of clade 2.3.4.4b H5 avian influenza viruses circulating in Asia. These viruses exhibit highly diverse genomic constellations that differ substantially from those circulating in other regions. Consequently, existing genotyping tools, such as GenoFLU and Genin2, may not adequately classify many Asian viruses. Differences in genotype nomenclature among countries and institutions further complicate comparisons, highlighting the need for a harmonized genotyping framework for Asia.
 
 GenoFLU-Asia was developed based on the USDA-VS/GenoFLU program through a collaboration between the Korea Disease Control and Prevention Agency (KDCA) and Kyungpook National University, Republic of Korea. The tool automatically assigns genotypes to clade 2.3.4.4b H5 avian influenza viruses detected in Asia since 2021 using a newly established genotype nomenclature system.
 
