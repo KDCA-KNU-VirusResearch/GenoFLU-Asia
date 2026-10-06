@@ -231,7 +231,7 @@ genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analys
 
 - **Previous output:** existing workbooks are preserved; this test creates a new timestamped workbook.
 - **Expected output:** 10 rows in the **All Results** sheet. Compare each virus ID and its `Genotype` with `test/expected_results.tsv`; the output `sample` field adds a full input filename stem (without `.fasta`) followed by `__` before the virus ID.
-- **Major genotypes:** `AS-a.1(N6)`, `AS-b.1`, `AS-c.1`, `AS-d.1`, `NA.1(B3.2)`.
+- **Major genotypes:** `AS-a.1(N6)`, `AS-b.1`, `AS-c.1`, `AS-d.1`, `22NA.1(B3.2)`.
 - **Minor genotypes:** `minor1(N6)`, `minor3(N6)`, `minor4`, `minor5(N6)`, `minor6(N6)`.
 - **Input provenance:** the selected records retain their original FASTA headers, accession identifiers, and nucleotide sequences from the supplied dataset. Major/minor labels follow the study genotype definitions, not the number of examples in this test file.
 

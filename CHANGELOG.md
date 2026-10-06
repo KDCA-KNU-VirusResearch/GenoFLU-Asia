@@ -1,5 +1,12 @@
 # Update history
 
+## Reference database update — 2026-10-06
+
+- Replaced the eight reference FASTA files and `genotype_key_asia.xlsx` with the supplied October 2026 dataset.
+- The supplied database contains 126 genotype definitions and 562 reference sequences. All segment-group identifiers match between the workbook and FASTA files.
+- All 10 bundled example viruses were assigned successfully. The expected name `NA.1(B3.2)` is now `22NA.1(B3.2)`, as supplied in the updated workbook.
+- Software version remains v1.0; this is a reference database update.
+
 ## v1.0 — Current version
 
 Current documentation baseline for GenoFLU-Asia and its bundled reference database.
