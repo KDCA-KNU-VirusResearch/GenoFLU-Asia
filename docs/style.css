@@ -26,3 +26,9 @@ header nav a[aria-current=page]{color:var(--teal);box-shadow:0 2px var(--teal);p
 .kdca-signature{width:82px;height:82px;object-fit:contain;flex-shrink:0}
 @media(max-width:1050px){.hero.hero-institutions{grid-template-columns:1fr;max-width:850px;gap:36px}.institution-panel{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}.institution-panel>.eyebrow{margin-bottom:10px}}
 @media(max-width:720px){.institution h2{font-size:18px}.knu-institution>img,.kdca-signature{width:64px;height:64px}.institution{gap:18px}}
+
+/* Homepage: modest institutional credits below the page content. */
+.hero.hero-home{display:block;max-width:1000px}.hero-home .hero-brand{max-width:700px;margin:0 0 28px}.hero-home .intro{max-width:640px}
+footer.home-footer{flex-wrap:wrap}footer.home-footer .footer-institutions{order:4;flex-basis:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;max-width:680px;margin:12px auto 0;padding-top:20px;border-top:1px solid var(--line)}
+.footer-institution{display:flex;align-items:center;gap:10px;min-width:0;font-size:12px;line-height:1.5;color:var(--gray)}.footer-institution img{width:36px;height:36px;object-fit:contain;flex-shrink:0}
+@media(max-width:720px){footer.home-footer .footer-institutions{gap:16px}.footer-institution{font-size:11px;gap:8px}.footer-institution img{width:30px;height:30px}}
