@@ -4,7 +4,7 @@ Source: supplied comparison workbook, 27 October 2026. Covers 65 GenoFLU-Asia ge
 
 [Search and filter the comparison table](https://kdca-knu-virusresearch.github.io/GenoFLU-Asia/comparison.html) · [Download the original Excel workbook](docs/data/genotype_comparison_20261027.xlsx)
 
-Correspondences are reproduced from the supplied literature comparison workbook. Reference numbers in that workbook apply within each genotype entry. Display names AS-c.3.1.2 and NA.1(B3.2) are updated here to AS-c.3.1.1 and 22NA.1(B3.2), respectively; the downloadable source workbook is unchanged.
+Correspondences are reproduced from the supplied literature comparison workbook. Reference numbers in that workbook apply within each genotype entry. The display name AS-c.3.1.2 is updated here to AS-c.3.1.1; the downloadable source workbook is unchanged.
 
 | GenoFLU-Asia | Previously reported designation | Reference |
 | --- | --- | --- |
@@ -69,7 +69,7 @@ Correspondences are reproduced from the supplied literature comparison workbook.
 | AS-d.1.2(N2) | G2d-2 | [Takadate Yoshihiro et al., 2024](https://doi.org/10.1016/j.virusres.2024.199425)<br>Takadate Yoshihiro et al. (2024). Genetic diversity of H5N1 and H5N2 high pathogenicity avian influenza viruses isolated from poultry in Japan during the winter of 2022–2023. Virus Research. |
 | AS-d.1.2(N2) | III | [Hew Lim Yik et al., 2024](https://doi.org/10.1155/2024/1199876)<br>Hew Lim Yik et al. (2024). Continuous Introduction of H5 High Pathogenicity Avian Influenza Viruses in Hokkaido, Japan: Characterization of Viruses Isolated in Winter 2022–2023 and Early Winter 2023–2024. Transboundary and Emerging Diseases. |
 | AS-d.1.3 | IV | [Hew Lim Yik et al., 2024](https://doi.org/10.1155/2024/1199876)<br>Hew Lim Yik et al. (2024). Continuous Introduction of H5 High Pathogenicity Avian Influenza Viruses in Hokkaido, Japan: Characterization of Viruses Isolated in Winter 2022–2023 and Early Winter 2023–2024. Transboundary and Emerging Diseases. |
-| 22NA.1(B3.2) | 22G2 | [Cha Ra Mi et al., 2025](https://doi.org/10.1016/j.virusres.2025.199541)<br>Cha Ra Mi et al. (2025). Genetic characteristics and pathogenesis of clade 2.3.4.4b H5N1 high pathogenicity avian influenza virus isolated from poultry in South Korea, 2022–2023. Virus Research. |
+| NA.1(B3.2) | 22G2 | [Cha Ra Mi et al., 2025](https://doi.org/10.1016/j.virusres.2025.199541)<br>Cha Ra Mi et al. (2025). Genetic characteristics and pathogenesis of clade 2.3.4.4b H5N1 high pathogenicity avian influenza virus isolated from poultry in South Korea, 2022–2023. Virus Research. |
 | minor1(N6) | G2 | [Gu Wenli et al., 2022](https://doi.org/10.1080/22221751.2022.2063076)<br>Gu Wenli et al. (2022). Novel H5N6 reassortants bearing the clade 2.3.4.4b HA gene of H5N8 virus have been detected in poultry and caused multiple human infections in China. Emerging Microbes &amp; Infections. |
 | minor10(N6) | G5 | [Gu Wenli et al., 2022](https://doi.org/10.1080/22221751.2022.2063076)<br>Gu Wenli et al. (2022). Novel H5N6 reassortants bearing the clade 2.3.4.4b HA gene of H5N8 virus have been detected in poultry and caused multiple human infections in China. Emerging Microbes &amp; Infections. |
 | minor11(N6) | G4 | [Gu Wenli et al., 2022](https://doi.org/10.1080/22221751.2022.2063076)<br>Gu Wenli et al. (2022). Novel H5N6 reassortants bearing the clade 2.3.4.4b HA gene of H5N8 virus have been detected in poultry and caused multiple human infections in China. Emerging Microbes &amp; Infections. |
