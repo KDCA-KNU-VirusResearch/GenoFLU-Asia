@@ -37,6 +37,9 @@ Correspondence between 65 GenoFLU-Asia genotypes and previously reported designa
 
 The display name AS-c.3.1.2 is updated here to AS-c.3.1.1; the downloadable source workbook is unchanged.
 
+<details>
+<summary>View the full genotype comparison table (65 genotypes)</summary>
+
 | GenoFLU-Asia | Previously reported designation | Reference |
 | --- | --- | --- |
 | AS-a.1(N6) | G3 | [Gu Wenli et al., 2022](https://doi.org/10.1080/22221751.2022.2063076)<br>Gu Wenli et al. (2022). Novel H5N6 reassortants bearing the clade 2.3.4.4b HA gene of H5N8 virus have been detected in poultry and caused multiple human infections in China. Emerging Microbes &amp; Infections. |
@@ -137,6 +140,8 @@ The display name AS-c.3.1.2 is updated here to AS-c.3.1.1; the downloadable sour
 | minor70 | G2d-8 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
 | minor71 | G2c-15 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
 | minor72 | G2d-9 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
+
+</details>
 
 ## Installation
 
