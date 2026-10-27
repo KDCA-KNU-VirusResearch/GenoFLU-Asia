@@ -36,7 +36,7 @@ Correspondence between GenoFLU-Asia genotypes and previously reported designatio
 [Search and filter on the website](https://kdca-knu-virusresearch.github.io/GenoFLU-Asia/comparison.html)
 
 <details>
-<summary>View the full genotype comparison table (65 genotypes)</summary>
+<summary>View the full genotype comparison table (66 genotypes)</summary>
 
 | GenoFLU-Asia | Previously reported designation | Reference |
 | --- | --- | --- |
@@ -89,6 +89,7 @@ Correspondence between GenoFLU-Asia genotypes and previously reported designatio
 | AS-c.3 | 22G4 | [Cha Ra Mi et al., 2025](https://doi.org/10.1016/j.virusres.2025.199541)<br>Cha Ra Mi et al. (2025). Genetic characteristics and pathogenesis of clade 2.3.4.4b H5N1 high pathogenicity avian influenza virus isolated from poultry in South Korea, 2022–2023. Virus Research. |
 | AS-c.3.1 | G2c-13 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
 | AS-c.3.1 | Genotype 2 | [Si Young-Jae et al., 2025](https://doi.org/10.3389/fvets.2025.1638067)<br>Si Young-Jae et al. (2025). First detection of clade 2.3.4.4b H5N1 highly pathogenic avian influenza virus in a wild leopard cat (Prionailurus bengalensis) in South Korea. Frontiers in Veterinary Science. |
+| AS-c.3.1 | Kor24–25A | [Seo Ye-Ram et al., 2026](https://doi.org/10.1186/s13567-026-01847-2)<br>Seo Ye-Ram et al. (2026). Multiple introductions and spread of novel reassortant highly pathogenic avian influenza A (H5N1) clade 2.3.4.4b viruses via wild birds, South Korea, 2024–2025. Veterinary Research, 57, 178. |
 | AS-c.3.1.1 | G2c-17 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
 | AS-c.4 | G2c-12 | [Nishiura Hayate et al., 2024](https://doi.org/10.3390/v16121956)<br>Nishiura Hayate et al. (2024). Phylogenetic and Pathogenic Analysis of H5N1 and H5N6 High Pathogenicity Avian Influenza Virus Isolated from Poultry Farms (Layer and Broiler Chickens) in Japan in the 2023/2024 Season. Viruses. |
 | AS-c.4 | 23G2 | [Cha Ra Mi et al., 2026](https://doi.org/10.1155/tbed/8053623)<br>Cha Ra Mi et al. (2026). Emergence and Genetic Characteristics of H5N1, H5N6, and H5N3 Clade 2.3.4.4b High Pathogenicity Avian Influenza Viruses in South Korea During the 2023–2024 and 2024–2025 Winter Seasons. Transboundary and Emerging Diseases. |
@@ -96,6 +97,7 @@ Correspondence between GenoFLU-Asia genotypes and previously reported designatio
 | AS-d.1 | I | [Hew Lim Yik et al., 2024](https://doi.org/10.1155/2024/1199876)<br>Hew Lim Yik et al. (2024). Continuous Introduction of H5 High Pathogenicity Avian Influenza Viruses in Hokkaido, Japan: Characterization of Viruses Isolated in Winter 2022–2023 and Early Winter 2023–2024. Transboundary and Emerging Diseases. |
 | AS-d.1 | G1 | [Cui Pengfei et al., 2022](https://doi.org/10.1080/22221751.2022.2088407)<br>Cui Pengfei et al. (2022). Global dissemination of H5N1 influenza viruses bearing the clade 2.3.4.4b HA gene and biologic analysis of the ones detected in China. Emerging Microbes &amp; Infections. |
 | AS-d.1 | 22G0 | [Cha Ra Mi et al., 2025](https://doi.org/10.1016/j.virusres.2025.199541)<br>Cha Ra Mi et al. (2025). Genetic characteristics and pathogenesis of clade 2.3.4.4b H5N1 high pathogenicity avian influenza virus isolated from poultry in South Korea, 2022–2023. Virus Research. |
+| AS-d.1 | Kor24–25B | [Seo Ye-Ram et al., 2026](https://doi.org/10.1186/s13567-026-01847-2)<br>Seo Ye-Ram et al. (2026). Multiple introductions and spread of novel reassortant highly pathogenic avian influenza A (H5N1) clade 2.3.4.4b viruses via wild birds, South Korea, 2024–2025. Veterinary Research, 57, 178. |
 | AS-d.1.1 | G2d-1 | [Takadate Yoshihiro et al., 2024](https://doi.org/10.1016/j.virusres.2024.199425)<br>Takadate Yoshihiro et al. (2024). Genetic diversity of H5N1 and H5N2 high pathogenicity avian influenza viruses isolated from poultry in Japan during the winter of 2022–2023. Virus Research. |
 | AS-d.1.1 | II | [Hew Lim Yik et al., 2024](https://doi.org/10.1155/2024/1199876)<br>Hew Lim Yik et al. (2024). Continuous Introduction of H5 High Pathogenicity Avian Influenza Viruses in Hokkaido, Japan: Characterization of Viruses Isolated in Winter 2022–2023 and Early Winter 2023–2024. Transboundary and Emerging Diseases. |
 | AS-d.1.2(N2) | G2d-2 | [Takadate Yoshihiro et al., 2024](https://doi.org/10.1016/j.virusres.2024.199425)<br>Takadate Yoshihiro et al. (2024). Genetic diversity of H5N1 and H5N2 high pathogenicity avian influenza viruses isolated from poultry in Japan during the winter of 2022–2023. Virus Research. |
@@ -138,6 +140,7 @@ Correspondence between GenoFLU-Asia genotypes and previously reported designatio
 | minor70 | G2d-8 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
 | minor71 | G2c-15 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
 | minor72 | G2d-9 | [Takadate Yoshihiro et al., 2026](https://doi.org/10.1128/spectrum.00293-26)<br>Takadate Yoshihiro et al. (2026). High pathogenicity avian influenza A (H5N1) viruses isolated from poultry and wild birds in Japan during the 2024–2025 season. Microbiology Spectrum. |
+| minor68 | Kor24–25C | [Seo Ye-Ram et al., 2026](https://doi.org/10.1186/s13567-026-01847-2)<br>Seo Ye-Ram et al. (2026). Multiple introductions and spread of novel reassortant highly pathogenic avian influenza A (H5N1) clade 2.3.4.4b viruses via wild birds, South Korea, 2024–2025. Veterinary Research, 57, 178. |
 
 </details>
 
