@@ -1,14 +1,10 @@
 # Update history
 
-## Genotype name correction — 2026-10-20
-
-- Renamed `AS-c.3.1.2` to `AS-c.3.1.1`. The eight-segment constellation is unchanged.
-
 ## Reference database update — 2026-10-06
 
 - Replaced the eight reference FASTA files and `genotype_key_asia.xlsx` with the supplied October 2026 dataset.
 - The supplied database contains 126 genotype definitions and 562 reference sequences. All segment-group identifiers match between the workbook and FASTA files.
-- All 10 bundled example viruses were assigned successfully. The expected genotype name is `NA.1(B3.2)`.
+- All 10 bundled example viruses were assigned successfully.
 - Software version remains v1.0; this is a reference database update.
 
 ## v1.0 — Current version
