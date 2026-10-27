@@ -29,6 +29,14 @@ Major and minor designations reflect the number of viruses representing each gen
 
 **Genotype nomenclature.** Naming scheme for major and minor genotypes.
 
+## Comparison with published genotype designations
+
+Explore the correspondence between GenoFLU-Asia names and previously reported genotype designations, with linked literature references.
+
+- [Searchable comparison table](https://kdca-knu-virusresearch.github.io/GenoFLU-Asia/comparison.html)
+- [Full comparison table](GENOTYPE_COMPARISON.md)
+- [Download the source Excel workbook](docs/data/genotype_comparison_20261027.xlsx)
+
 ## Installation
 
 GenoFLU-Asia can be used in a Conda environment on Linux or Ubuntu on WSL. Install Conda through Miniforge or Miniconda.

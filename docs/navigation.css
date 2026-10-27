@@ -1,0 +1,2 @@
+/* Keep the expanded documentation navigation usable on smaller screens. */
+@media(max-width:1150px){header{height:auto;min-height:92px;flex-wrap:wrap;gap:16px;padding-top:18px;padding-bottom:18px}header nav{width:100%;overflow-x:auto;white-space:nowrap;padding-bottom:5px;gap:22px;flex-shrink:0}header nav>a{flex-shrink:0}}
