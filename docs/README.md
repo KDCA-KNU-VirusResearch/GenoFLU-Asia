@@ -35,8 +35,6 @@ Correspondence between 65 GenoFLU-Asia genotypes and previously reported designa
 
 [Search and filter on the website](https://kdca-knu-virusresearch.github.io/GenoFLU-Asia/comparison.html)
 
-The display name AS-c.3.1.2 is updated here to AS-c.3.1.1; the source workbook is unchanged.
-
 <details>
 <summary>View the full genotype comparison table (65 genotypes)</summary>
 
