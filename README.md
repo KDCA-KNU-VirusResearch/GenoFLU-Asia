@@ -33,9 +33,9 @@ Major and minor designations reflect the number of viruses representing each gen
 
 Correspondence between 65 GenoFLU-Asia genotypes and previously reported designations, based on the supplied literature comparison workbook (27 October 2026).
 
-[Search and filter on the website](https://kdca-knu-virusresearch.github.io/GenoFLU-Asia/comparison.html) · [Download the source Excel workbook](docs/data/genotype_comparison_20261027.xlsx)
+[Search and filter on the website](https://kdca-knu-virusresearch.github.io/GenoFLU-Asia/comparison.html)
 
-The display name AS-c.3.1.2 is updated here to AS-c.3.1.1; the downloadable source workbook is unchanged.
+The display name AS-c.3.1.2 is updated here to AS-c.3.1.1; the source workbook is unchanged.
 
 <details>
 <summary>View the full genotype comparison table (65 genotypes)</summary>
