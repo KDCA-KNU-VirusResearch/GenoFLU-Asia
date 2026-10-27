@@ -332,17 +332,17 @@ genoflu-asia --input ./input --output ./output
 
 ## Test the installation
 
-The `test/` folder contains `example_10_genotypes.fasta` (10 viruses, eight segments each) and `expected_results.tsv`. The example covers five distinct major and five distinct minor genotypes. Expected assignments were verified with the bundled Asia references and genotype definitions; they are software test results, not an independent biological validation.
+The `examples/` folder contains `example_10_genotypes.fasta` (10 viruses, eight segments each) and `expected_results.tsv`. The example covers five distinct major and five distinct minor genotypes. Expected assignments were verified with the bundled Asia references and genotype definitions; they are software test results, not an independent biological validation.
 
 Run the example using your activated environment:
 
 ```bash
 conda activate genoflu-asia
-genoflu-asia --input ~/projects/GenoFLU-Asia/test --output ~/genoflu_asia_analysis/output
+genoflu-asia --input ~/projects/GenoFLU-Asia/examples --output ~/genoflu_asia_analysis/output
 ```
 
 - **Previous output:** existing workbooks are preserved; this test creates a new timestamped workbook.
-- **Expected output:** 10 rows in the **All Results** sheet. Compare each virus ID and its `Genotype` with `test/expected_results.tsv`; the output `sample` field adds a full input filename stem (without `.fasta`) followed by `__` before the virus ID.
+- **Expected output:** 10 rows in the **All Results** sheet. Compare each virus ID and its `Genotype` with `examples/expected_results.tsv`; the output `sample` field adds a full input filename stem (without `.fasta`) followed by `__` before the virus ID.
 - **Major genotypes:** `AS-a.1(N6)`, `AS-b.1`, `AS-c.1`, `AS-d.1`, `NA.1(B3.2)`.
 - **Minor genotypes:** `minor1(N6)`, `minor3(N6)`, `minor4`, `minor5(N6)`, `minor6(N6)`.
 - **Input provenance:** the selected records retain their original FASTA headers, accession identifiers, and nucleotide sequences from the supplied dataset. Major/minor labels follow the study genotype definitions, not the number of examples in this test file.
