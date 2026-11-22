@@ -186,7 +186,7 @@ The 97% threshold applies to the reported local alignment, not necessarily the e
 | `sample` | Full input filename stem (without the final extension) plus `__` and the virus ID. |
 | `date` | Analysis timestamp; this is not the collection date. |
 | `File Name` | Source FASTA filename. |
-| `Genotype` | A name from the current key, such as `AS-d.1` or `minor34`, or an unassigned-result message. |
+| `Genotype` | A name from the current key, such as `AS-d.1` or `AS-minor34`, or an unassigned-result message. |
 | `Genotype List Used, >=97%` | Accepted `segment:group` assignments used to match the genotype definitions. |
 | `Genotype Sample Title List` | Selected reference hits, formatted as `segment:group:reference_sample`. This may include hits below 97%. |
 | `Genotype Percent Match List` | BLAST percent identities, in the same order as the reference-title list. |
@@ -202,7 +202,7 @@ For example, a mismatch value of `40` means 40 mismatching bases in that selecte
 | Result | Meaning | What to check next |
 | --- | --- | --- |
 | A genotype name, e.g. `AS-d.1` | Eight accepted segment groups match a genotype definition. | Review sequence quality and individual reference matches; the label is not a confidence score or a measure of disease severity. |
-| A `minor` name, e.g. `minor34` | A defined genotype definition whose name contains `minor`. | Treat it as an assigned genotype; `minor` does not mean a failed analysis or low-confidence sequence. |
+| A `minor` name, e.g. `AS-minor34` | A defined genotype definition whose name contains `minor`. | Treat it as an assigned genotype; `minor` does not mean a failed analysis or low-confidence sequence. |
 | `Not assigned: No Matching Genotypes` | Eight segments pass the identity threshold, but their combination is absent from the key. | Check the segment combination, sequence quality, and current key. This result alone does not establish a novel genotype. |
 | `Not assigned: Only ... segments >=97% ...` | Fewer than eight segment assignments pass the threshold. The threshold is **≥97%**. | Identify missing or below-threshold segments and verify the FASTA IDs and completeness. |
 | An input virus is absent from the workbook | No reportable BLAST-hit group may have been generated for it. | Compare input IDs with reported IDs; check the input format, reference files, and BLAST availability. |
